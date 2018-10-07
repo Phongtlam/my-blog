@@ -1,0 +1,11 @@
+.App-markdown-form {
+  .text-area {
+    resize: none;
+    height: 500px;
+    width: 500px;
+  
+    &:focus {
+      border: none;
+    }
+  }
+}

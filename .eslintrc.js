@@ -1,0 +1,12 @@
+module.exports = {
+	"extends": "airbnb",
+	"parser": "babel-eslint",
+	"rules": {
+		"no-underscore-dangle": "off",
+		"arrow-parens": "off",
+		"react/destructuring-assignment": "off",
+		"comma-dangle": "off",
+		"react/jsx-filename-extension": [1, { "extensions": [".js", ".jsx"] }],
+		"implicit-arrow-linebreak": "off"
+	}
+};
