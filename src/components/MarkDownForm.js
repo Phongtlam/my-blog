@@ -2,7 +2,7 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import { stagePost, publishPost } from '../utils/fetch';
 
-class MarkDownFrom extends React.Component {
+class MarkDownForm extends React.Component {
   static propTypes = {
     setBlogBody: PropTypes.func
   };
@@ -53,7 +53,7 @@ class MarkDownFrom extends React.Component {
 
   render() {
     return (
-      <div className="App-markdown-form">
+      <div className="App-MarkDownForm">
         <textarea
           onChange={this._onChange}
           value={this.state.markDownInput}
@@ -70,4 +70,4 @@ class MarkDownFrom extends React.Component {
   }
 }
 
-export default MarkDownFrom;
+export default MarkDownForm;

@@ -1,9 +1,9 @@
 import React, { Component } from 'react';
 import { fetchAllPosts } from '../utils/fetch';
-import MarkDownFrom from '../components/MarkDownForm';
+import MarkDownForm from '../components/MarkDownForm';
 
-import '../styles/App.scss';
 import BlogBody from '../components/BlogBody';
+import SideBar from '../components/SideBar';
 
 class App extends Component {
   constructor(props) {
@@ -27,8 +27,11 @@ class App extends Component {
   render() {
     return (
       <div className="App">
-        <MarkDownFrom setBlogBody={this._setBlogBody} />
-        <BlogBody blogHtml={this.state.blogHtml} />
+        <SideBar className="App-sidebar-container" />
+        <div className="App-content-container">
+          <MarkDownForm setBlogBody={this._setBlogBody} />
+          <BlogBody blogHtml={this.state.blogHtml} />
+        </div>
       </div>
     );
   }

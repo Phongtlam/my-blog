@@ -17,10 +17,10 @@ export const api = (body, method, route) =>
 
 const postApi = (body, route) => api(body, 'POST', route);
 
-const getApi = (body, route) => api(body, 'GET', route);
+const getApi = route => api(null, 'GET', route);
 
 export const stagePost = body => postApi(body, '/post/stage');
 
 export const publishPost = body => postApi(body, '/post/publish');
 
-export const fetchAllPosts = () => getApi(null, '/post/all');
+export const fetchAllPosts = () => getApi('/post/allposts');

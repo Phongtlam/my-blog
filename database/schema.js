@@ -3,9 +3,10 @@ const urls = require('../src/urls');
 
 const db = mongoose.connection;
 
+// eslint-disable-next-line no-console
 db.on('error', console.error.bind(console, 'Connection error: '));
-db.once('open', callback => {
-  // The code in this asynchronous callback block is executed after connecting to MongoDB.
+db.once('open', () => {
+  // eslint-disable-next-line no-console
   console.log('Successfully connected to MongoDB.');
 });
 
