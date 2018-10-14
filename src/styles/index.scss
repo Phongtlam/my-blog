@@ -1,5 +1,9 @@
+@import "./util_variable.scss";
+
 body {
 	font-family: "Roboto", Helvetica, Arial, sans-serif;
+	line-height: 1.55;
+	background-color: #f4f4f4;
 }
 
 textarea:focus, input:focus {
@@ -8,6 +12,10 @@ textarea:focus, input:focus {
 
 a {
 	text-decoration: none
+}
+
+p {
+	color: $grey;
 }
 
 button {

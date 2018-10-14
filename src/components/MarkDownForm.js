@@ -19,26 +19,40 @@ class MarkDownForm extends React.Component {
     super(props);
     this.state = {
       markDownInput: '',
-      markDownDisplay: ''
+      markDownDisplay: '',
+      blogTitle: ''
     };
 
-    this._onChange = this._onChange.bind(this);
+    this._onChangeTextarea = this._onChangeTextarea.bind(this);
+    this._onChangeTitle = this._onChangeTitle.bind(this);
     this._stagePost = this._stagePost.bind(this);
     this._publishPost = this._publishPost.bind(this);
     this._cancelStagePost = this._cancelStagePost.bind(this);
   }
 
-  _onChange(e) {
+  _onChangeTextarea(e) {
     this.setState({ markDownInput: e.target.value });
   }
 
+  _onChangeTitle(e) {
+    this.setState({ blogTitle: e.target.value });
+  }
+
   _stagePost() {
-    if (this.state.markDownInput.length === 0) {
+    const { markDownInput, blogTitle } = this.state;
+    if (markDownInput.length === 0 || blogTitle.length === 0) {
+      this.setState({
+        markDownDisplay:
+          markDownInput.length === 0
+            ? 'There is nothing to stage'
+            : 'Missing title'
+      });
       return;
     }
     stagePost({
       date: new Date(),
-      markdownTexts: this.state.markDownInput
+      markdownTexts: markDownInput,
+      blogTitle
     })
       .then(res => {
         this.setState({
@@ -56,10 +70,10 @@ class MarkDownForm extends React.Component {
     publishPost({ data: 'publish' }).then(res => {
       if (res.blogPost) {
         this.props.setBlogBody(res.blogPost);
-        this.setState({
-          markDownDisplay: res.message
-        });
       }
+      this.setState({
+        markDownDisplay: res.message
+      });
     });
   }
 
@@ -83,10 +97,15 @@ class MarkDownForm extends React.Component {
             iconName="fas fa-times"
             iconSize="2x"
           />
+          <input
+            onChange={this._onChangeTitle}
+            value={this.state.blogTitle}
+            className="title-input"
+          />
           <span className="text-display">{this.state.markDownDisplay}</span>
         </div>
         <textarea
-          onChange={this._onChange}
+          onChange={this._onChangeTextarea}
           value={this.state.markDownInput}
           className="text-area"
         />

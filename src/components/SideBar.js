@@ -19,9 +19,34 @@ const routes = [
   }
 ];
 
+const externalRoutes = [
+  {
+    url: 'mailto:phongtlam@gmail.com',
+    icon: 'fas fa-envelope'
+  },
+  {
+    url: 'https://github.com/Phongtlam',
+    icon: 'fab fa-github'
+  },
+  {
+    url: 'https://www.linkedin.com/in/phongtlam/',
+    icon: 'fab fa-linkedin-in'
+  },
+  {
+    url: 'https://angel.co/phongtlam',
+    icon: 'fab fa-angellist'
+  },
+  {
+    url: 'https://soundcloud.com/phong-twitch-lam',
+    icon: 'fab fa-soundcloud'
+  }
+];
+
 const SideBar = props => (
   <div className={`${props.className} App-SideBar`}>
-    <NavLink to="/">Phong Lam</NavLink>
+    <NavLink to="/">
+      <h1>Phong Lam</h1>
+    </NavLink>
     <p>
       I specialize in making beautiful software and user interfaces. I have a
       passion for all things science and chess AI. When not coding, I love
@@ -39,6 +64,19 @@ const SideBar = props => (
         >
           {route.routeName}
         </NavLink>
+      ))}
+    </div>
+    <div className="App-SideBar-external-group">
+      {externalRoutes.map(route => (
+        <a
+          key={route.url}
+          className="external-link"
+          href={route.url}
+          target="_blank"
+          rel="noopener noreferrer"
+        >
+          <i className={route.icon} />
+        </a>
       ))}
     </div>
   </div>

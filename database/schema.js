@@ -18,6 +18,7 @@ mongoose.connect(
 
 const blogSchema = new mongoose.Schema({
   date: String,
+  blogTitle: String,
   markdownTexts: String
 });
 

@@ -2,6 +2,8 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import showdown from 'showdown';
 
+import '../styles/BlogBody.scss';
+
 const converter = new showdown.Converter();
 
 const BlogBody = props => (

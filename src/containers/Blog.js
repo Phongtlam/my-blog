@@ -50,7 +50,7 @@ class Blog extends React.Component {
           Create
         </ButtonIcon>
         {this.state.openMarkDownForm ? (
-          <div className="App-MarkDownForm-container" draggable>
+          <div className="App-MarkDownForm-container">
             <MarkDownForm
               onToggleMarkDownForm={this._onToggleMarkDownForm}
               setBlogBody={this._setBlogBody}

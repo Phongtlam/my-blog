@@ -1,0 +1,9 @@
+@import "./util_variable.scss";
+
+.App-blog-body {
+  padding: $m-spacing;
+
+  .single-blog {
+    border-top: $border;
+  }
+}

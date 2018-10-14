@@ -4,13 +4,25 @@
   display: flex;
   flex-direction: column;
 
-  .close-markdownform-btn {
-    max-width: 50px;
-  }
+  .header {
+    .close-markdownform-btn {
+      max-width: 50px;
+      margin-right: $m-spacing;
+    }
+  
+    .text-display {
+      color: $red;
+      margin-left: $m-spacing;
+    }
 
-  .text-display {
-    color: $red;
-    margin-left: $m-spacing;
+    .title-input {
+      height: 40px;
+      width: 500px;
+      border: $border;
+      border-radius: $s-radius;
+      padding: 0px $s-spacing;
+    }
+
   }
 
   .text-area {

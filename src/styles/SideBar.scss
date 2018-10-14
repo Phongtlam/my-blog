@@ -1,6 +1,14 @@
 @import "./util_variable.scss";
 
+$circle: 40px;
+
 .App-SideBar {
+  padding: $m-spacing;
+
+  h1 {
+    color: $blue;
+  }
+
   &-router-group {
     display: flex;
     flex-direction: column;
@@ -8,6 +16,7 @@
 
     .route {
       color: $black;
+      margin-bottom: $s-spacing;
       
       &::before {
         font-family: 'Font Awesome 5 Free';
@@ -24,6 +33,27 @@
     .active, .active:hover {
       font-weight: bold;
       color: $blue;
+    }
+  }
+
+  &-external-group {
+    display: flex;
+    margin-top: $m-spacing;
+
+    .external-link {
+      border-radius: $circle;
+      border: $border;
+      width: $circle;
+      height: $circle;
+      line-height: $circle;
+      text-align: center;
+      color: $grey;
+      margin-right: $m-spacing;
+
+      &:hover {
+        color: $blue;
+        border-color: $blue;
+      }
     }
   }
 }
