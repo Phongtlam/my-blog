@@ -1,40 +1,15 @@
-import React, { Component } from 'react';
-import { fetchAllPosts } from '../utils/fetch';
-import MarkDownForm from '../components/MarkDownForm';
+import React from 'react';
 
-import BlogBody from '../components/BlogBody';
 import SideBar from '../components/SideBar';
+import Main from './Main';
 
-class App extends Component {
-  constructor(props) {
-    super(props);
-    this.state = {
-      blogHtml: []
-    };
-    this._setBlogBody = this._setBlogBody.bind(this);
-  }
+import '../styles/App.scss';
 
-  componentDidMount() {
-    fetchAllPosts().then(response => {
-      this._setBlogBody(response);
-    });
-  }
-
-  _setBlogBody(html) {
-    this.setState(prevState => ({ blogHtml: prevState.blogHtml.concat(html) }));
-  }
-
-  render() {
-    return (
-      <div className="App">
-        <SideBar className="App-sidebar-container" />
-        <div className="App-content-container">
-          <MarkDownForm setBlogBody={this._setBlogBody} />
-          <BlogBody blogHtml={this.state.blogHtml} />
-        </div>
-      </div>
-    );
-  }
-}
+const App = () => (
+  <div className="App">
+    <SideBar className="App-sidebar-container" />
+    <Main className="App-content-container" />
+  </div>
+);
 
 export default App;

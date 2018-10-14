@@ -1,0 +1,54 @@
+@import "./util_variable.scss";
+
+.App-ButtonIcon, .App-ButtonIcon.primary, .App-ButtonIcon.danger {
+  border-radius: 5px;
+  border: 1px solid $lightblue;
+  transition: 0.5s;
+  line-height: 1.55;
+  padding: 6px 12px;
+
+  &:hover {
+    background-color: $blue;
+
+    .icon {
+      color: $white;
+    }
+
+    .text {
+      color: $white;
+    }
+  }
+
+  .icon {
+    color: $blue;
+    vertical-align: middle;
+  }
+
+  .text {
+    margin-left: $xs-spacing;
+    font-weight: bold;
+    color: $blue;
+  }
+}
+
+.App-ButtonIcon.primary, .App-ButtonIcon.danger {
+  border: 1px solid $lightblue;
+  background-color: $lightblue;
+
+  .icon {
+    color: $white;
+  }
+
+  .text {
+    color: $white;
+  }
+}
+
+.App-ButtonIcon.danger {
+  border: 1px solid $lightred;
+  background-color: $lightred;
+
+  &:hover {
+    background-color: $red;
+  }
+}

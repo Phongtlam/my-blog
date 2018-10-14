@@ -1,0 +1,29 @@
+@import "./util_variable.scss";
+
+.App-SideBar {
+  &-router-group {
+    display: flex;
+    flex-direction: column;
+    margin-left: $m-spacing;
+
+    .route {
+      color: $black;
+      
+      &::before {
+        font-family: 'Font Awesome 5 Free';
+        font-weight: 600;
+        content: '\f054';
+        margin: 0 5px 0 -15px;
+      }
+
+      &:hover {
+        color: $lightblue;
+      }
+    }
+
+    .active, .active:hover {
+      font-weight: bold;
+      color: $blue;
+    }
+  }
+}

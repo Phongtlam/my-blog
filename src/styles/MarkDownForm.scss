@@ -1,11 +1,34 @@
+@import "./util_variable.scss";
+
 .App-MarkDownForm {
+  display: flex;
+  flex-direction: column;
+
+  .close-markdownform-btn {
+    max-width: 50px;
+  }
+
+  .text-display {
+    color: $red;
+    margin-left: $m-spacing;
+  }
+
   .text-area {
     resize: none;
-    height: 500px;
-    width: 500px;
-  
-    &:focus {
-      border: none;
+    max-width: 100%;
+    height: 600px;
+    border-radius: $s-radius;
+    padding: $s-spacing;
+    margin: $m-spacing 0px;
+  }
+
+  .button-group {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+
+    .staging-btn {
+      margin-right: $s-spacing;
     }
   }
 }
