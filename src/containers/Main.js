@@ -9,8 +9,8 @@ import Home from './Home';
 const Main = props => (
   <main className={props.className}>
     <Switch>
-      <Route exact path="/" component={Home} />
-      <Route path="/Blog" component={Blog} />
+      <Route exact path="/" render={() => <Home {...props} />} />
+      <Route path="/Blog" render={() => <Blog {...props} />} />
       <Route path="/About" component={About} />
     </Switch>
   </main>

@@ -1,20 +1,21 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import showdown from 'showdown';
+import classnames from 'classnames';
 
 import '../styles/HtmlParser.scss';
 
 const converter = new showdown.Converter();
 
 const HtmlParser = props => (
-  <ul className="App-blog-body">
-    {props.htmlStrings.map(htmlString => (
+  <ul className={classnames('App-blog-body', props.className)}>
+    {props.htmlData.map(htmlDatum => (
       <li
         className="single-blog"
-        key={htmlString.date}
+        key={htmlDatum.date}
         // eslint-disable-next-line react/no-danger
         dangerouslySetInnerHTML={{
-          __html: converter.makeHtml(htmlString.markdownTexts)
+          __html: converter.makeHtml(htmlDatum.markdownTexts)
         }}
       />
     ))}
@@ -22,11 +23,13 @@ const HtmlParser = props => (
 );
 
 HtmlParser.propTypes = {
-  htmlStrings: PropTypes.arrayOf(PropTypes.object)
+  className: PropTypes.string,
+  htmlData: PropTypes.arrayOf(PropTypes.object)
 };
 
 HtmlParser.defaultProps = {
-  htmlStrings: []
+  className: undefined,
+  htmlData: []
 };
 
 export default HtmlParser;

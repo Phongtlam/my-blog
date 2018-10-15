@@ -1,0 +1,53 @@
+@import "./util_variable.scss";
+
+.App-PortfolioCard {
+  max-width: 400px;
+  background-color: $white;
+  display: inline-block;
+  margin: $m-spacing;
+  box-shadow: 0 0 5px #ccc;
+
+  &:hover {
+    box-shadow: 0 0 5px #999;
+  }
+
+  &-image-container {
+    position: relative;
+
+    &:hover {
+      .button-overlay {
+        opacity: 1;
+      }
+
+      .image {
+        opacity: 0.33;
+      }
+    }
+
+    .image {
+      cursor: pointer;
+      width: 400px;
+      transition: .5s ease;
+    }
+
+    .button-overlay {
+      position: absolute;
+      opacity: 0;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      border: none;
+      background: transparent;
+
+      &:hover {
+        .icon {
+          color: $blue;
+        }
+      }
+    }
+  }
+
+  .content {
+    padding: $m-spacing;
+  }
+}

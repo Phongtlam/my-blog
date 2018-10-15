@@ -7,6 +7,7 @@
 		"react/destructuring-assignment": "off",
 		"comma-dangle": "off",
 		"react/jsx-filename-extension": [1, { "extensions": [".js", ".jsx"] }],
-		"implicit-arrow-linebreak": "off"
+		"implicit-arrow-linebreak": "off",
+		"operator-linebreak": "off"
 	}
 }

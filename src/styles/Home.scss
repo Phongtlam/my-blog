@@ -1,7 +1,13 @@
+@import "./util_variable.scss";
+
 .App-Home {
   &-particles {
     position: absolute;
     width: 100%;
     z-index: -1;
+  }
+
+  .create-new-blog-btn {
+    margin-right: $s-spacing;
   }
 }

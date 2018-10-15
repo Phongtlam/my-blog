@@ -19,12 +19,14 @@ mongoose.connect(
 const blogSchema = new mongoose.Schema({
   date: String,
   title: String,
+  coverImgUrl: String,
   markdownTexts: String
 });
 
 const portfolioSchema = new mongoose.Schema({
   date: String,
   title: String,
+  coverImgUrl: String,
   markdownTexts: String
 });
 

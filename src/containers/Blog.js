@@ -1,38 +1,30 @@
 import React from 'react';
 import classnames from 'classnames';
+import PropTypes from 'prop-types';
 
 import MarkDownForm from '../components/MarkDownForm';
-import { fetchAll } from '../utils/fetch';
 
 import '../styles/Blog.scss';
 import ButtonIcon from '../components/ButtonIcon';
 import HtmlParser from '../components/HtmlParser';
 
 class Blog extends React.Component {
+  static propTypes = {
+    blogData: PropTypes.arrayOf(PropTypes.object),
+    setHtml: PropTypes.func
+  };
+
+  static defaultProps = {
+    blogData: [],
+    setHtml: PropTypes.func
+  };
+
   constructor(props) {
     super(props);
     this.state = {
-      blogHtml: [],
       openMarkDownForm: false
     };
-    this._setBlogBody = this._setBlogBody.bind(this);
     this._onToggleMarkDownForm = this._onToggleMarkDownForm.bind(this);
-  }
-
-  componentDidMount() {
-    this._checkInitialPosts();
-  }
-
-  _checkInitialPosts() {
-    if (this.state.blogHtml.length === 0) {
-      fetchAll('post').then(response => {
-        this._setBlogBody(response);
-      });
-    }
-  }
-
-  _setBlogBody(html) {
-    this.setState(prevState => ({ blogHtml: prevState.blogHtml.concat(html) }));
   }
 
   _onToggleMarkDownForm(isOpen) {
@@ -59,11 +51,11 @@ class Blog extends React.Component {
         >
           <MarkDownForm
             onToggleMarkDownForm={this._onToggleMarkDownForm}
-            setHtmlBody={this._setBlogBody}
+            setHtmlBody={this.props.setHtml}
             type="post"
           />
         </div>
-        <HtmlParser htmlStrings={this.state.blogHtml} />
+        <HtmlParser htmlStrings={this.props.blogData} />
       </div>
     );
   }

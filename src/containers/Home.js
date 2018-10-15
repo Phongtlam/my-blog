@@ -1,47 +1,49 @@
 import React from 'react';
 import Particles from 'react-particles-js';
 import classnames from 'classnames';
+import PropTypes from 'prop-types';
 
 import '../styles/Home.scss';
 import MarkDownForm from '../components/MarkDownForm';
 import ButtonIcon from '../components/ButtonIcon';
 import HtmlParser from '../components/HtmlParser';
-import { fetchAll } from '../utils/fetch';
+import PortfolioCard from '../components/PortfolioCard';
 
 class Home extends React.Component {
+  static propTypes = {
+    portfolioData: PropTypes.arrayOf(PropTypes.object),
+    setHtml: PropTypes.func
+  };
+
+  static defaultProps = {
+    portfolioData: [],
+    setHtml: PropTypes.func
+  };
+
   constructor(props) {
     super(props);
     this.state = {
       openMarkDownForm: false,
-      portfolioHtml: []
+      portfolioIndex: undefined
     };
+
+    this._onPortfolioCardClick = this._onPortfolioCardClick.bind(this);
     this._onToggleMarkDownForm = this._onToggleMarkDownForm.bind(this);
-    this._setPortfolioHtml = this._setPortfolioHtml.bind(this);
-  }
-
-  componentDidMount() {
-    this._checkInitialPosts();
-  }
-
-  _checkInitialPosts() {
-    if (this.state.portfolioHtml.length === 0) {
-      fetchAll('portfolio').then(response => {
-        this._setPortfolioHtml(response);
-      });
-    }
   }
 
   _onToggleMarkDownForm(isOpen) {
     this.setState({ openMarkDownForm: isOpen });
   }
 
-  _setPortfolioHtml(html) {
-    this.setState(prevState => ({
-      portfolioHtml: prevState.portfolioHtml.concat(html)
-    }));
+  _onPortfolioCardClick(index) {
+    this.setState({
+      portfolioIndex: index
+    });
   }
 
   render() {
+    const { portfolioData, setHtml } = this.props;
+    const { openMarkDownForm, portfolioIndex } = this.state;
     return (
       <div className="App-Home">
         <div className="App-Home-particles">
@@ -74,7 +76,7 @@ class Home extends React.Component {
         </div>
         <ButtonIcon
           className={classnames('create-new-blog-btn', {
-            hidden: this.state.openMarkDownForm
+            hidden: openMarkDownForm
           })}
           type="primary"
           callback={() => this._onToggleMarkDownForm(true)}
@@ -82,18 +84,41 @@ class Home extends React.Component {
         >
           Create
         </ButtonIcon>
+        <ButtonIcon
+          className={classnames({
+            hidden: portfolioIndex === undefined
+          })}
+          type="primary"
+          callback={() => this._onPortfolioCardClick(undefined)}
+          iconName="fas fa-chevron-left"
+        />
         <div
           className={classnames('App-MarkDownForm-container', {
-            hidden: !this.state.openMarkDownForm
+            hidden: !openMarkDownForm
           })}
         >
           <MarkDownForm
             type="portfolio"
             onToggleMarkDownForm={this._onToggleMarkDownForm}
-            setHtmlBody={this._setPortfolioHtml}
+            setHtmlBody={setHtml}
           />
         </div>
-        <HtmlParser htmlStrings={this.state.portfolioHtml} />
+        <div
+          className={classnames({
+            hidden: portfolioIndex !== undefined
+          })}
+        >
+          {portfolioData.map((datum, index) => (
+            <PortfolioCard
+              key={datum._id}
+              onImageClick={() => this._onPortfolioCardClick(index)}
+              cardData={datum}
+            />
+          ))}
+        </div>
+        {portfolioIndex !== undefined && (
+          <HtmlParser htmlData={[portfolioData[portfolioIndex]]} />
+        )}
       </div>
     );
   }

@@ -10,7 +10,7 @@ class MarkDownForm extends React.Component {
     setHtmlBody: PropTypes.func,
     onToggleMarkDownForm: PropTypes.func,
     className: PropTypes.string,
-    type: 'portfolio' || 'post'
+    type: PropTypes.oneOf(['portfolio', 'post'])
   };
 
   static defaultProps = {
@@ -62,14 +62,17 @@ class MarkDownForm extends React.Component {
       {
         date: new Date(),
         markdownTexts: markDownInput,
-        title: markDownTitle
+        title: markDownTitle,
+        coverImgUrl
       },
       this.props.type
     )
       .then(res => {
         this.setState({
           markDownInput: '',
-          markDownDisplay: res.message
+          markDownDisplay: res.message,
+          markDownTitle: '',
+          coverImgUrl: ''
         });
       })
       .catch(err => {
@@ -81,7 +84,7 @@ class MarkDownForm extends React.Component {
   _onPublish() {
     publishFile({ data: 'publish' }, this.props.type).then(res => {
       if (res.blogPost) {
-        this.props.setHtmlBody(res.blogPost);
+        this.props.setHtmlBody(this.props.type, res.blogPost);
       }
       this.setState({
         markDownDisplay: res.message,
