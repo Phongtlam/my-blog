@@ -4,6 +4,7 @@ body {
 	font-family: "Roboto", Helvetica, Arial, sans-serif;
 	line-height: 1.55;
 	background-color: #f4f4f4;
+	// overflow: hidden;
 }
 
 textarea:focus, input:focus {
@@ -18,7 +19,7 @@ p {
 	color: $grey;
 }
 
-button {
+button, a {
 	cursor: pointer;
 	outline: 0;
 }

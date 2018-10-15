@@ -3,10 +3,17 @@
 .App-MarkDownForm {
   display: flex;
   flex-direction: column;
+  padding: $m-spacing;
+  background-color: $white;
+
+  &.small-size {
+    .text-area {
+      height: 300px;
+    }
+  }
 
   .header {
-    .close-markdownform-btn {
-      max-width: 50px;
+    .markdownform-btn {
       margin-right: $m-spacing;
     }
   

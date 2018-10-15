@@ -1,5 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
+import classnames from 'classnames';
 import { stagePost, publishPost } from '../utils/fetch';
 import '../styles/MarkDownForm.scss';
 import ButtonIcon from './ButtonIcon';
@@ -7,12 +8,14 @@ import ButtonIcon from './ButtonIcon';
 class MarkDownForm extends React.Component {
   static propTypes = {
     setBlogBody: PropTypes.func,
-    onToggleMarkDownForm: PropTypes.func
+    onToggleMarkDownForm: PropTypes.func,
+    className: PropTypes.string
   };
 
   static defaultProps = {
     setBlogBody: PropTypes.func,
-    onToggleMarkDownForm: PropTypes.func
+    onToggleMarkDownForm: PropTypes.func,
+    className: null
   };
 
   constructor(props) {
@@ -20,7 +23,8 @@ class MarkDownForm extends React.Component {
     this.state = {
       markDownInput: '',
       markDownDisplay: '',
-      blogTitle: ''
+      blogTitle: '',
+      isLargeSize: false
     };
 
     this._onChangeTextarea = this._onChangeTextarea.bind(this);
@@ -28,6 +32,7 @@ class MarkDownForm extends React.Component {
     this._stagePost = this._stagePost.bind(this);
     this._publishPost = this._publishPost.bind(this);
     this._cancelStagePost = this._cancelStagePost.bind(this);
+    this._onToggleFormSize = this._onToggleFormSize.bind(this);
   }
 
   _onChangeTextarea(e) {
@@ -87,24 +92,44 @@ class MarkDownForm extends React.Component {
     });
   }
 
+  _onToggleFormSize() {
+    this.setState(prevState => ({ isLargeSize: !prevState.isLargeSize }));
+  }
+
   render() {
     return (
-      <div className="App-MarkDownForm">
+      <div
+        className={classnames('App-MarkDownForm', this.props.className, {
+          'small-size': this.state.isLargeSize
+        })}
+      >
         <div className="header">
           <ButtonIcon
-            className="close-markdownform-btn"
+            className="markdownform-btn"
             callback={this.props.onToggleMarkDownForm}
             iconName="fas fa-times"
+            iconSize="2x"
+          />
+          <ButtonIcon
+            className="markdownform-btn"
+            callback={this._onToggleFormSize}
+            iconName={
+              this.state.isLargeSize
+                ? 'fas fa-expand'
+                : 'fas fa-window-minimize'
+            }
             iconSize="2x"
           />
           <input
             onChange={this._onChangeTitle}
             value={this.state.blogTitle}
             className="title-input"
+            placeholder="Title goes here"
           />
           <span className="text-display">{this.state.markDownDisplay}</span>
         </div>
         <textarea
+          placeholder="Markdown body"
           onChange={this._onChangeTextarea}
           value={this.state.markDownInput}
           className="text-area"

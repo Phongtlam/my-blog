@@ -1,4 +1,5 @@
 import React from 'react';
+import classnames from 'classnames';
 
 import BlogBody from '../components/BlogBody';
 import MarkDownForm from '../components/MarkDownForm';
@@ -42,21 +43,25 @@ class Blog extends React.Component {
     return (
       <div className="App-Blog">
         <ButtonIcon
-          className="create-new-blog-btn"
+          className={classnames('create-new-blog-btn', {
+            hidden: this.state.openMarkDownForm
+          })}
           type="primary"
           callback={() => this._onToggleMarkDownForm(true)}
           iconName="fas fa-plus"
         >
           Create
         </ButtonIcon>
-        {this.state.openMarkDownForm && (
-          <div className="App-MarkDownForm-container">
-            <MarkDownForm
-              onToggleMarkDownForm={this._onToggleMarkDownForm}
-              setBlogBody={this._setBlogBody}
-            />
-          </div>
-        )}
+        <div
+          className={classnames('App-MarkDownForm-container', {
+            hidden: !this.state.openMarkDownForm
+          })}
+        >
+          <MarkDownForm
+            onToggleMarkDownForm={this._onToggleMarkDownForm}
+            setBlogBody={this._setBlogBody}
+          />
+        </div>
         <BlogBody blogHtml={this.state.blogHtml} />
       </div>
     );

@@ -22,6 +22,15 @@ const blogSchema = new mongoose.Schema({
   markdownTexts: String
 });
 
+const portfolioSchema = new mongoose.Schema({
+  date: String,
+  blogTitle: String,
+  markdownTexts: String
+});
+
 const Blog = mongoose.model('Blog', blogSchema);
 
-module.exports = Blog;
+const Portfolio = mongoose.model('Portfolio', portfolioSchema);
+
+module.exports.Blog = Blog;
+module.exports.Portfolio = Portfolio;

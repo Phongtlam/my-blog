@@ -1,5 +1,6 @@
-const Blog = require('./schema');
+const Schema = require('./schema');
 
 module.exports = {
-  Blog
+  Blog: Schema.Blog,
+  Portfolio: Schema.Portfolio
 };

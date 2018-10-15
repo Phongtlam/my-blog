@@ -1,6 +1,11 @@
 @import "./util_variable.scss";
 
 .App-blog-body {
+  display: flex;
+  overflow: auto;
+  max-height: 100vh;
+  flex-direction: column;
+
   padding: $m-spacing;
 
   .single-blog {
