@@ -25,6 +25,8 @@ app.use((req, res, next) => {
 
 app.use('/post', routes.post);
 
+app.use('/portfolio', routes.portfolio);
+
 app.get('/admin', (req, res) => {
   console.log('hello');
 });

@@ -5,18 +5,40 @@ import classnames from 'classnames';
 import '../styles/Home.scss';
 import MarkDownForm from '../components/MarkDownForm';
 import ButtonIcon from '../components/ButtonIcon';
+import HtmlParser from '../components/HtmlParser';
+import { fetchAll } from '../utils/fetch';
 
 class Home extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      openMarkDownForm: false
+      openMarkDownForm: false,
+      portfolioHtml: []
     };
     this._onToggleMarkDownForm = this._onToggleMarkDownForm.bind(this);
+    this._setPortfolioHtml = this._setPortfolioHtml.bind(this);
+  }
+
+  componentDidMount() {
+    this._checkInitialPosts();
+  }
+
+  _checkInitialPosts() {
+    if (this.state.portfolioHtml.length === 0) {
+      fetchAll('portfolio').then(response => {
+        this._setPortfolioHtml(response);
+      });
+    }
   }
 
   _onToggleMarkDownForm(isOpen) {
     this.setState({ openMarkDownForm: isOpen });
+  }
+
+  _setPortfolioHtml(html) {
+    this.setState(prevState => ({
+      portfolioHtml: prevState.portfolioHtml.concat(html)
+    }));
   }
 
   render() {
@@ -65,8 +87,13 @@ class Home extends React.Component {
             hidden: !this.state.openMarkDownForm
           })}
         >
-          <MarkDownForm onToggleMarkDownForm={this._onToggleMarkDownForm} />
+          <MarkDownForm
+            type="portfolio"
+            onToggleMarkDownForm={this._onToggleMarkDownForm}
+            setHtmlBody={this._setPortfolioHtml}
+          />
         </div>
+        <HtmlParser htmlStrings={this.state.portfolioHtml} />
       </div>
     );
   }

@@ -1,21 +1,23 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import classnames from 'classnames';
-import { stagePost, publishPost } from '../utils/fetch';
+import { stageFile, publishFile } from '../utils/fetch';
 import '../styles/MarkDownForm.scss';
 import ButtonIcon from './ButtonIcon';
 
 class MarkDownForm extends React.Component {
   static propTypes = {
-    setBlogBody: PropTypes.func,
+    setHtmlBody: PropTypes.func,
     onToggleMarkDownForm: PropTypes.func,
-    className: PropTypes.string
+    className: PropTypes.string,
+    type: 'portfolio' || 'post'
   };
 
   static defaultProps = {
-    setBlogBody: PropTypes.func,
+    setHtmlBody: PropTypes.func,
     onToggleMarkDownForm: PropTypes.func,
-    className: null
+    className: null,
+    type: 'portfolio'
   };
 
   constructor(props) {
@@ -23,42 +25,47 @@ class MarkDownForm extends React.Component {
     this.state = {
       markDownInput: '',
       markDownDisplay: '',
-      blogTitle: '',
+      markDownTitle: '',
+      coverImgUrl: '',
       isLargeSize: false
     };
 
-    this._onChangeTextarea = this._onChangeTextarea.bind(this);
-    this._onChangeTitle = this._onChangeTitle.bind(this);
-    this._stagePost = this._stagePost.bind(this);
-    this._publishPost = this._publishPost.bind(this);
-    this._cancelStagePost = this._cancelStagePost.bind(this);
+    this._onChangeInput = this._onChangeInput.bind(this);
+    this._onStagingFile = this._onStagingFile.bind(this);
+    this._onPublish = this._onPublish.bind(this);
+    this._onCancelStaging = this._onCancelStaging.bind(this);
     this._onToggleFormSize = this._onToggleFormSize.bind(this);
   }
 
-  _onChangeTextarea(e) {
-    this.setState({ markDownInput: e.target.value });
+  _onChangeInput(e, field) {
+    this.setState({
+      [field]: e.target.value
+    });
   }
 
-  _onChangeTitle(e) {
-    this.setState({ blogTitle: e.target.value });
-  }
-
-  _stagePost() {
-    const { markDownInput, blogTitle } = this.state;
-    if (markDownInput.length === 0 || blogTitle.length === 0) {
+  _onStagingFile() {
+    const { markDownInput, markDownTitle, coverImgUrl } = this.state;
+    if (
+      markDownInput.length === 0 ||
+      markDownTitle.length === 0 ||
+      coverImgUrl.length === 0
+    ) {
       this.setState({
         markDownDisplay:
           markDownInput.length === 0
             ? 'There is nothing to stage'
-            : 'Missing title'
+            : `Missing ${markDownTitle.length === 0 ? 'title' : 'image cover'}`
       });
       return;
     }
-    stagePost({
-      date: new Date(),
-      markdownTexts: markDownInput,
-      blogTitle
-    })
+    stageFile(
+      {
+        date: new Date(),
+        markdownTexts: markDownInput,
+        title: markDownTitle
+      },
+      this.props.type
+    )
       .then(res => {
         this.setState({
           markDownInput: '',
@@ -71,19 +78,23 @@ class MarkDownForm extends React.Component {
       });
   }
 
-  _publishPost() {
-    publishPost({ data: 'publish' }).then(res => {
+  _onPublish() {
+    publishFile({ data: 'publish' }, this.props.type).then(res => {
       if (res.blogPost) {
-        this.props.setBlogBody(res.blogPost);
+        this.props.setHtmlBody(res.blogPost);
       }
       this.setState({
-        markDownDisplay: res.message
+        markDownDisplay: res.message,
+        markDownInput: '',
+        markDownTitle: '',
+        coverImgUrl: ''
       });
+      this.props.onToggleMarkDownForm();
     });
   }
 
-  _cancelStagePost() {
-    stagePost({
+  _onCancelStaging() {
+    stageFile({
       cancel: 'cancel staging'
     }).then(res => {
       this.setState({
@@ -121,16 +132,22 @@ class MarkDownForm extends React.Component {
             iconSize="2x"
           />
           <input
-            onChange={this._onChangeTitle}
-            value={this.state.blogTitle}
-            className="title-input"
+            onChange={e => this._onChangeInput(e, 'markDownTitle')}
+            value={this.state.markDownTitle}
+            className="header-input"
             placeholder="Title goes here"
+          />
+          <input
+            onChange={e => this._onChangeInput(e, 'coverImgUrl')}
+            value={this.state.coverImgUrl}
+            className="header-input"
+            placeholder="Cover Img url"
           />
           <span className="text-display">{this.state.markDownDisplay}</span>
         </div>
         <textarea
           placeholder="Markdown body"
-          onChange={this._onChangeTextarea}
+          onChange={e => this._onChangeInput(e, 'markDownInput')}
           value={this.state.markDownInput}
           className="text-area"
         />
@@ -138,17 +155,17 @@ class MarkDownForm extends React.Component {
           <div className="left">
             <ButtonIcon
               className="staging-btn"
-              callback={this._stagePost}
+              callback={this._onStagingFile}
               iconName="fas fa-file-upload"
             >
               Stage Post
             </ButtonIcon>
-            <ButtonIcon callback={this._publishPost} iconName="fas fa-save">
+            <ButtonIcon callback={this._onPublish} iconName="fas fa-save">
               Publish Post
             </ButtonIcon>
           </div>
           <ButtonIcon
-            callback={this._cancelStagePost}
+            callback={this._onCancelStaging}
             iconName="fas fa-ban"
             type="danger"
           >

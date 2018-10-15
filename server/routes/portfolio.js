@@ -39,15 +39,15 @@ router.post('/publish', (req, res) => {
       })
     );
   }
-  const newBlogPost = new mongoSchema.Blog(stagingData);
-  return newBlogPost
+  const newPortfolio = new mongoSchema.Portfolio(stagingData);
+  return newPortfolio
     .save()
     .then(item => {
       res.status(200).send(
         JSON.stringify({
           success: true,
           blogPost: item,
-          message: 'Successfully publish your new blog post!'
+          message: 'Successfully publish your new portfolio!'
         })
       );
       stagingData = null;
@@ -63,8 +63,8 @@ router.post('/publish', (req, res) => {
 });
 
 router.get('/all', (req, res) => {
-  mongoSchema.Blog.find({}, (error, blogs) => {
-    res.send(blogs.slice(0, 5));
+  mongoSchema.Portfolio.find({}, (error, portfolio) => {
+    res.send(portfolio.slice(0, 5));
   });
 });
 

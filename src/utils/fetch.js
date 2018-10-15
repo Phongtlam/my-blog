@@ -19,8 +19,8 @@ const postApi = (body, route) => api(body, 'POST', route);
 
 const getApi = route => api(null, 'GET', route);
 
-export const stagePost = body => postApi(body, '/post/stage');
+export const stageFile = (body, type) => postApi(body, `/${type}/stage`);
 
-export const publishPost = body => postApi(body, '/post/publish');
+export const publishFile = (body, type) => postApi(body, `/${type}/publish`);
 
-export const fetchAllPosts = () => getApi('/post/allposts');
+export const fetchAll = type => getApi(`/${type}/all`);

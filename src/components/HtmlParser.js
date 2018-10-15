@@ -2,31 +2,31 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import showdown from 'showdown';
 
-import '../styles/BlogBody.scss';
+import '../styles/HtmlParser.scss';
 
 const converter = new showdown.Converter();
 
-const BlogBody = props => (
+const HtmlParser = props => (
   <ul className="App-blog-body">
-    {props.blogHtml.map(blog => (
+    {props.htmlStrings.map(htmlString => (
       <li
         className="single-blog"
-        key={blog.date}
+        key={htmlString.date}
         // eslint-disable-next-line react/no-danger
         dangerouslySetInnerHTML={{
-          __html: converter.makeHtml(blog.markdownTexts)
+          __html: converter.makeHtml(htmlString.markdownTexts)
         }}
       />
     ))}
   </ul>
 );
 
-BlogBody.propTypes = {
-  blogHtml: PropTypes.arrayOf(PropTypes.object)
+HtmlParser.propTypes = {
+  htmlStrings: PropTypes.arrayOf(PropTypes.object)
 };
 
-BlogBody.defaultProps = {
-  blogHtml: []
+HtmlParser.defaultProps = {
+  htmlStrings: []
 };
 
-export default BlogBody;
+export default HtmlParser;

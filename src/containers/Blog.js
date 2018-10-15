@@ -1,12 +1,12 @@
 import React from 'react';
 import classnames from 'classnames';
 
-import BlogBody from '../components/BlogBody';
 import MarkDownForm from '../components/MarkDownForm';
-import { fetchAllPosts } from '../utils/fetch';
+import { fetchAll } from '../utils/fetch';
 
 import '../styles/Blog.scss';
 import ButtonIcon from '../components/ButtonIcon';
+import HtmlParser from '../components/HtmlParser';
 
 class Blog extends React.Component {
   constructor(props) {
@@ -25,7 +25,7 @@ class Blog extends React.Component {
 
   _checkInitialPosts() {
     if (this.state.blogHtml.length === 0) {
-      fetchAllPosts().then(response => {
+      fetchAll('post').then(response => {
         this._setBlogBody(response);
       });
     }
@@ -59,10 +59,11 @@ class Blog extends React.Component {
         >
           <MarkDownForm
             onToggleMarkDownForm={this._onToggleMarkDownForm}
-            setBlogBody={this._setBlogBody}
+            setHtmlBody={this._setBlogBody}
+            type="post"
           />
         </div>
-        <BlogBody blogHtml={this.state.blogHtml} />
+        <HtmlParser htmlStrings={this.state.blogHtml} />
       </div>
     );
   }
