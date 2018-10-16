@@ -28,7 +28,13 @@ ButtonIcon.propTypes = {
   iconName: PropTypes.string.isRequired,
   iconSize: PropTypes.string,
   children: PropTypes.string,
-  type: PropTypes.string
+  type: PropTypes.oneOf([
+    'normal',
+    'primary',
+    'danger',
+    'borderless',
+    'borderless-danger'
+  ])
 };
 
 ButtonIcon.defaultProps = {

@@ -2,6 +2,7 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import showdown from 'showdown';
 import classnames from 'classnames';
+import { fileDataShape } from '../utils/propTypesShapes';
 
 import '../styles/HtmlParser.scss';
 
@@ -24,7 +25,7 @@ const HtmlParser = props => (
 
 HtmlParser.propTypes = {
   className: PropTypes.string,
-  htmlData: PropTypes.arrayOf(PropTypes.object)
+  htmlData: PropTypes.arrayOf(fileDataShape)
 };
 
 HtmlParser.defaultProps = {

@@ -4,11 +4,13 @@ import showdown from 'showdown';
 
 import '../styles/PortfolioCard.scss';
 import ButtonIcon from './ButtonIcon';
+import { fileDataShape } from '../utils/propTypesShapes';
 
 const converter = new showdown.Converter();
 
 const PortfolioCard = ({
   onImageClick,
+  onEdit,
   cardData: { coverImgUrl, title, markdownTexts }
 }) => (
   <div className="App-PortfolioCard">
@@ -25,9 +27,22 @@ const PortfolioCard = ({
         className="button-overlay"
         iconName="fas fa-expand-arrows-alt"
         iconSize="5x"
+        type="borderless"
       />
     </div>
     <div className="content">
+      <ButtonIcon
+        className="action-button"
+        callback={onEdit}
+        iconName="fas fa-edit"
+        type="borderless"
+      />
+      <ButtonIcon
+        className="action-button"
+        callback={onImageClick}
+        iconName="fas fa-trash-alt"
+        type="borderless-danger"
+      />
       <h3>{title}</h3>
       <div
         // eslint-disable-next-line react/no-danger
@@ -41,18 +56,13 @@ const PortfolioCard = ({
 
 PortfolioCard.propTypes = {
   onImageClick: PropTypes.func,
-  cardData: PropTypes.shape({
-    coverImgUrl: PropTypes.string,
-    markdownTexts: PropTypes.string,
-    date: PropTypes.string,
-    title: PropTypes.string,
-    _id: PropTypes.string,
-    __v: PropTypes.number
-  })
+  onEdit: PropTypes.func,
+  cardData: fileDataShape
 };
 
 PortfolioCard.defaultProps = {
   onImageClick: PropTypes.func,
+  onEdit: PropTypes.func,
   cardData: {}
 };
 

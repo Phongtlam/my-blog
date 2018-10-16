@@ -3,7 +3,7 @@
 .App-ButtonIcon, .App-ButtonIcon.primary, .App-ButtonIcon.danger {
   border-radius: 5px;
   border: 1px solid $lightblue;
-  transition: 0.5s;
+  transition: $transition;
   line-height: 1.55;
   padding: 6px 12px;
 
@@ -28,6 +28,32 @@
     margin-left: $xs-spacing;
     font-weight: bold;
     color: $blue;
+  }
+}
+
+.App-ButtonIcon.borderless {
+  border: none;
+  background: transparent;
+
+  &-danger {
+    border: none;
+    background: transparent;
+
+    .icon {
+      color: $lightred;
+
+      &:hover {
+        color: $red;
+      }
+    }
+  }
+  
+  .icon {
+    color: $lightblue;
+
+    &:hover {
+      color: $blue;
+    }
   }
 }
 

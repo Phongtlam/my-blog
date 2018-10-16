@@ -9,6 +9,10 @@
 
   &:hover {
     box-shadow: 0 0 5px #999;
+
+    .action-button {
+      opacity: 1;
+    }
   }
 
   &-image-container {
@@ -27,7 +31,7 @@
     .image {
       cursor: pointer;
       width: 400px;
-      transition: .5s ease;
+      transition: $transition;
     }
 
     .button-overlay {
@@ -36,18 +40,16 @@
       top: 50%;
       left: 50%;
       transform: translate(-50%, -50%);
-      border: none;
-      background: transparent;
-
-      &:hover {
-        .icon {
-          color: $blue;
-        }
-      }
     }
   }
 
   .content {
     padding: $m-spacing;
+  }
+
+  .action-button {
+    margin-right: $m-spacing;
+    opacity: 0;
+    transition: $transition;
   }
 }

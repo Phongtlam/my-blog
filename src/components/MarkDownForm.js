@@ -10,14 +10,23 @@ class MarkDownForm extends React.Component {
     setHtmlBody: PropTypes.func,
     onToggleMarkDownForm: PropTypes.func,
     className: PropTypes.string,
-    type: PropTypes.oneOf(['portfolio', 'post'])
+    type: PropTypes.oneOf(['portfolio', 'post']),
+    itemToEdit: PropTypes.shape({
+      coverImgUrl: PropTypes.string,
+      markdownTexts: PropTypes.string,
+      date: PropTypes.string,
+      title: PropTypes.string,
+      _id: PropTypes.string,
+      __v: PropTypes.number
+    })
   };
 
   static defaultProps = {
     setHtmlBody: PropTypes.func,
     onToggleMarkDownForm: PropTypes.func,
     className: null,
-    type: 'portfolio'
+    type: '',
+    itemToEdit: {}
   };
 
   constructor(props) {
@@ -35,6 +44,19 @@ class MarkDownForm extends React.Component {
     this._onPublish = this._onPublish.bind(this);
     this._onCancelStaging = this._onCancelStaging.bind(this);
     this._onToggleFormSize = this._onToggleFormSize.bind(this);
+    this._onResetMarkDownForm = this._onResetMarkDownForm.bind(this);
+  }
+
+  static getDerivedStateFromProps(props) {
+    if (Object.keys(props.itemToEdit).length > 0) {
+      const { markdownTexts, title, coverImgUrl } = props.itemToEdit;
+      return {
+        markDownInput: markdownTexts,
+        markDownTitle: title,
+        coverImgUrl
+      };
+    }
+    return null;
   }
 
   _onChangeInput(e, field) {
@@ -69,11 +91,9 @@ class MarkDownForm extends React.Component {
     )
       .then(res => {
         this.setState({
-          markDownInput: '',
-          markDownDisplay: res.message,
-          markDownTitle: '',
-          coverImgUrl: ''
+          markDownDisplay: res.message
         });
+        this._onResetMarkDownForm();
       })
       .catch(err => {
         // eslint-disable-next-line no-console
@@ -87,11 +107,9 @@ class MarkDownForm extends React.Component {
         this.props.setHtmlBody(this.props.type, res.blogPost);
       }
       this.setState({
-        markDownDisplay: res.message,
-        markDownInput: '',
-        markDownTitle: '',
-        coverImgUrl: ''
+        markDownDisplay: res.message
       });
+      this._onResetMarkDownForm();
       this.props.onToggleMarkDownForm();
     });
   }
@@ -103,6 +121,14 @@ class MarkDownForm extends React.Component {
       this.setState({
         markDownDisplay: res.message
       });
+    });
+  }
+
+  _onResetMarkDownForm() {
+    this.setState({
+      markDownInput: '',
+      markDownTitle: '',
+      coverImgUrl: ''
     });
   }
 
@@ -120,7 +146,10 @@ class MarkDownForm extends React.Component {
         <div className="header">
           <ButtonIcon
             className="markdownform-btn"
-            callback={this.props.onToggleMarkDownForm}
+            callback={() => {
+              this.props.onToggleMarkDownForm();
+              this._onResetMarkDownForm();
+            }}
             iconName="fas fa-times"
             iconSize="2x"
           />
@@ -163,8 +192,17 @@ class MarkDownForm extends React.Component {
             >
               Stage Post
             </ButtonIcon>
-            <ButtonIcon callback={this._onPublish} iconName="fas fa-save">
-              Publish Post
+            <ButtonIcon
+              callback={this._onPublish}
+              iconName={
+                Object.keys(this.props.itemToEdit).length > 0
+                  ? 'fas fa-save'
+                  : 'fas fa-file-import'
+              }
+            >
+              {Object.keys(this.props.itemToEdit).length > 0
+                ? 'Save Edit'
+                : 'Publish Post'}
             </ButtonIcon>
           </div>
           <ButtonIcon

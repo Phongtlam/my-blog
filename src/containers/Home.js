@@ -8,10 +8,11 @@ import MarkDownForm from '../components/MarkDownForm';
 import ButtonIcon from '../components/ButtonIcon';
 import HtmlParser from '../components/HtmlParser';
 import PortfolioCard from '../components/PortfolioCard';
+import { fileDataShape } from '../utils/propTypesShapes';
 
 class Home extends React.Component {
   static propTypes = {
-    portfolioData: PropTypes.arrayOf(PropTypes.object),
+    portfolioData: PropTypes.arrayOf(fileDataShape),
     setHtml: PropTypes.func
   };
 
@@ -24,15 +25,20 @@ class Home extends React.Component {
     super(props);
     this.state = {
       openMarkDownForm: false,
-      portfolioIndex: undefined
+      portfolioIndex: undefined,
+      portfolioToEdit: {}
     };
 
     this._onPortfolioCardClick = this._onPortfolioCardClick.bind(this);
     this._onToggleMarkDownForm = this._onToggleMarkDownForm.bind(this);
+    this._onPortfolioEdit = this._onPortfolioEdit.bind(this);
   }
 
   _onToggleMarkDownForm(isOpen) {
-    this.setState({ openMarkDownForm: isOpen });
+    this.setState({
+      openMarkDownForm: isOpen,
+      portfolioToEdit: {}
+    });
   }
 
   _onPortfolioCardClick(index) {
@@ -41,9 +47,16 @@ class Home extends React.Component {
     });
   }
 
+  _onPortfolioEdit(index) {
+    this.setState({
+      openMarkDownForm: true,
+      portfolioToEdit: this.props.portfolioData[index]
+    });
+  }
+
   render() {
     const { portfolioData, setHtml } = this.props;
-    const { openMarkDownForm, portfolioIndex } = this.state;
+    const { openMarkDownForm, portfolioIndex, portfolioToEdit } = this.state;
     return (
       <div className="App-Home">
         <div className="App-Home-particles">
@@ -75,8 +88,8 @@ class Home extends React.Component {
           />
         </div>
         <ButtonIcon
-          className={classnames('create-new-blog-btn', {
-            hidden: openMarkDownForm
+          className={classnames('header-btn', {
+            hidden: openMarkDownForm || portfolioIndex !== undefined
           })}
           type="primary"
           callback={() => this._onToggleMarkDownForm(true)}
@@ -85,13 +98,25 @@ class Home extends React.Component {
           Create
         </ButtonIcon>
         <ButtonIcon
+          className={classnames('header-btn', {
+            hidden: portfolioIndex === undefined
+          })}
+          callback={() => this._onPortfolioEdit(portfolioIndex)}
+          type="primary"
+          iconName="fas fa-edit"
+        >
+          Edit
+        </ButtonIcon>
+        <ButtonIcon
           className={classnames({
             hidden: portfolioIndex === undefined
           })}
           type="primary"
           callback={() => this._onPortfolioCardClick(undefined)}
           iconName="fas fa-chevron-left"
-        />
+        >
+          Back
+        </ButtonIcon>
         <div
           className={classnames('App-MarkDownForm-container', {
             hidden: !openMarkDownForm
@@ -99,6 +124,7 @@ class Home extends React.Component {
         >
           <MarkDownForm
             type="portfolio"
+            itemToEdit={portfolioToEdit}
             onToggleMarkDownForm={this._onToggleMarkDownForm}
             setHtmlBody={setHtml}
           />
@@ -112,6 +138,7 @@ class Home extends React.Component {
             <PortfolioCard
               key={datum._id}
               onImageClick={() => this._onPortfolioCardClick(index)}
+              onEdit={() => this._onPortfolioEdit(index)}
               cardData={datum}
             />
           ))}
