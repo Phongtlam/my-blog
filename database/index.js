@@ -2,5 +2,6 @@ const Schema = require('./schema');
 
 module.exports = {
   Blog: Schema.Blog,
-  Portfolio: Schema.Portfolio
+  Portfolio: Schema.Portfolio,
+  Admin: Schema.Admin
 };

@@ -30,9 +30,13 @@ const portfolioSchema = new mongoose.Schema({
   markdownTexts: String
 });
 
-const Blog = mongoose.model('Blog', blogSchema);
+const adminSchema = new mongoose.Schema({
+  username: String,
+  password: String,
+  name: String,
+  date: String
+});
 
-const Portfolio = mongoose.model('Portfolio', portfolioSchema);
-
-module.exports.Blog = Blog;
-module.exports.Portfolio = Portfolio;
+module.exports.Blog = mongoose.model('Blog', blogSchema);
+module.exports.Portfolio = mongoose.model('Portfolio', portfolioSchema);
+module.exports.Admin = mongoose.model('Admin', adminSchema);

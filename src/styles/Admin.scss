@@ -1,0 +1,21 @@
+@import "./util_variable.scss";
+
+.App-Admin {
+  width: 500px;
+  display: flex;
+  flex-direction: column;
+
+  padding: $m-spacing;
+
+  @include centering-item();
+
+  &-label {
+    margin-bottom: $m-spacing;
+    display: flex;
+    justify-content: space-between;
+
+    input {
+      width: 300px;
+    }
+  }
+}

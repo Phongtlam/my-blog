@@ -24,3 +24,6 @@ export const stageFile = (body, type) => postApi(body, `/${type}/stage`);
 export const publishFile = (body, type) => postApi(body, `/${type}/publish`);
 
 export const fetchAll = type => getApi(`/${type}/all`);
+
+export const logIn = (body, queryString) =>
+  postApi(body, `/login${queryString}`);

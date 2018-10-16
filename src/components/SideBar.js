@@ -10,11 +10,11 @@ const routes = [
     routeName: 'Home'
   },
   {
-    linkTo: '/Blog',
+    linkTo: '/blog',
     routeName: 'Blog'
   },
   {
-    linkTo: '/About',
+    linkTo: '/about',
     routeName: 'About'
   }
 ];

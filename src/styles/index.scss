@@ -19,6 +19,13 @@ p {
 	color: $grey;
 }
 
+input {
+	height: 40px;
+	border: $border;
+	border-radius: $s-radius;
+	padding: 0px $s-spacing;
+}
+
 button, a {
 	cursor: pointer;
 	outline: 0;

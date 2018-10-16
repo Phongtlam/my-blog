@@ -27,8 +27,6 @@ app.use('/post', routes.post);
 
 app.use('/portfolio', routes.portfolio);
 
-app.get('/admin', (req, res) => {
-  console.log('hello');
-});
+app.use('/login', routes.login);
 
 module.exports = app;

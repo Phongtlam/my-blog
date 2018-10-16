@@ -5,13 +5,15 @@ import PropTypes from 'prop-types';
 import Blog from './Blog';
 import About from './About';
 import Home from './Home';
+import Admin from './Admin';
 
 const Main = props => (
   <main className={props.className}>
     <Switch>
       <Route exact path="/" render={() => <Home {...props} />} />
-      <Route path="/Blog" render={() => <Blog {...props} />} />
-      <Route path="/About" component={About} />
+      <Route path="/blog" render={() => <Blog {...props} />} />
+      <Route path="/about" component={About} />
+      <Route path="/admin" component={Admin} />
     </Switch>
   </main>
 );
