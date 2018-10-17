@@ -6,6 +6,7 @@
     "body-parser": "^1.18.3",
     "classnames": "^2.2.6",
     "express": "^4.16.3",
+    "history": "^4.7.2",
     "husky": "^1.1.1",
     "lint-staged": "^7.3.0",
     "mongodb": "^3.1.6",

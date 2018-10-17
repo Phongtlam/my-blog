@@ -4,11 +4,11 @@ import classnames from 'classnames';
 import { stageFile, publishFile } from '../utils/fetch';
 import '../styles/MarkDownForm.scss';
 import ButtonIcon from './ButtonIcon';
+import history from '../utils/history';
 
 class MarkDownForm extends React.Component {
   static propTypes = {
     setHtmlBody: PropTypes.func,
-    onToggleMarkDownForm: PropTypes.func,
     className: PropTypes.string,
     type: PropTypes.oneOf(['portfolio', 'post']),
     itemToEdit: PropTypes.shape({
@@ -23,7 +23,6 @@ class MarkDownForm extends React.Component {
 
   static defaultProps = {
     setHtmlBody: PropTypes.func,
-    onToggleMarkDownForm: PropTypes.func,
     className: null,
     type: '',
     itemToEdit: {}
@@ -45,18 +44,6 @@ class MarkDownForm extends React.Component {
     this._onCancelStaging = this._onCancelStaging.bind(this);
     this._onToggleFormSize = this._onToggleFormSize.bind(this);
     this._onResetMarkDownForm = this._onResetMarkDownForm.bind(this);
-  }
-
-  static getDerivedStateFromProps(props) {
-    if (Object.keys(props.itemToEdit).length > 0) {
-      const { markdownTexts, title, coverImgUrl } = props.itemToEdit;
-      return {
-        markDownInput: markdownTexts,
-        markDownTitle: title,
-        coverImgUrl
-      };
-    }
-    return null;
   }
 
   _onChangeInput(e, field) {
@@ -110,7 +97,7 @@ class MarkDownForm extends React.Component {
         markDownDisplay: res.message
       });
       this._onResetMarkDownForm();
-      this.props.onToggleMarkDownForm();
+      history.goBack();
     });
   }
 
@@ -147,7 +134,7 @@ class MarkDownForm extends React.Component {
           <ButtonIcon
             className="markdownform-btn"
             callback={() => {
-              this.props.onToggleMarkDownForm();
+              history.goBack();
               this._onResetMarkDownForm();
             }}
             iconName="fas fa-times"

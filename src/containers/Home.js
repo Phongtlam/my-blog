@@ -2,6 +2,7 @@ import React from 'react';
 import Particles from 'react-particles-js';
 import classnames from 'classnames';
 import PropTypes from 'prop-types';
+import { Route, Switch } from 'react-router-dom';
 
 import '../styles/Home.scss';
 import MarkDownForm from '../components/MarkDownForm';
@@ -9,11 +10,16 @@ import ButtonIcon from '../components/ButtonIcon';
 import HtmlParser from '../components/HtmlParser';
 import PortfolioCard from '../components/PortfolioCard';
 import { fileDataShape } from '../utils/propTypesShapes';
+import history from '../utils/history';
 
 class Home extends React.Component {
   static propTypes = {
-    portfolioData: PropTypes.arrayOf(fileDataShape),
-    setHtml: PropTypes.func
+    portfolioData: PropTypes.arrayOf(PropTypes.shape(fileDataShape)),
+    setHtml: PropTypes.func,
+    location: PropTypes.shape({
+      pathname: PropTypes.string.isRequired,
+      search: PropTypes.string.isRequired
+    }).isRequired
   };
 
   static defaultProps = {
@@ -23,40 +29,11 @@ class Home extends React.Component {
 
   constructor(props) {
     super(props);
-    this.state = {
-      openMarkDownForm: false,
-      portfolioIndex: undefined,
-      portfolioToEdit: {}
-    };
-
-    this._onPortfolioCardClick = this._onPortfolioCardClick.bind(this);
-    this._onToggleMarkDownForm = this._onToggleMarkDownForm.bind(this);
-    this._onPortfolioEdit = this._onPortfolioEdit.bind(this);
-  }
-
-  _onToggleMarkDownForm(isOpen) {
-    this.setState({
-      openMarkDownForm: isOpen,
-      portfolioToEdit: {}
-    });
-  }
-
-  _onPortfolioCardClick(index) {
-    this.setState({
-      portfolioIndex: index
-    });
-  }
-
-  _onPortfolioEdit(index) {
-    this.setState({
-      openMarkDownForm: true,
-      portfolioToEdit: this.props.portfolioData[index]
-    });
+    this.state = {};
   }
 
   render() {
-    const { portfolioData, setHtml } = this.props;
-    const { openMarkDownForm, portfolioIndex, portfolioToEdit } = this.state;
+    const { portfolioData, setHtml, location } = this.props;
     return (
       <div className="App-Home">
         <div className="App-Home-particles">
@@ -89,63 +66,55 @@ class Home extends React.Component {
         </div>
         <ButtonIcon
           className={classnames('header-btn', {
-            hidden: openMarkDownForm || portfolioIndex !== undefined
+            hidden: location.pathname !== '/Home'
           })}
           type="primary"
-          callback={() => this._onToggleMarkDownForm(true)}
+          callback={() => {
+            history.push(`${location.pathname}/create`);
+          }}
           iconName="fas fa-plus"
         >
           Create
         </ButtonIcon>
-        <ButtonIcon
-          className={classnames('header-btn', {
-            hidden: portfolioIndex === undefined
-          })}
-          callback={() => this._onPortfolioEdit(portfolioIndex)}
-          type="primary"
-          iconName="fas fa-edit"
-        >
-          Edit
-        </ButtonIcon>
-        <ButtonIcon
-          className={classnames({
-            hidden: portfolioIndex === undefined
-          })}
-          type="primary"
-          callback={() => this._onPortfolioCardClick(undefined)}
-          iconName="fas fa-chevron-left"
-        >
-          Back
-        </ButtonIcon>
-        <div
-          className={classnames('App-MarkDownForm-container', {
-            hidden: !openMarkDownForm
-          })}
-        >
-          <MarkDownForm
-            type="portfolio"
-            itemToEdit={portfolioToEdit}
-            onToggleMarkDownForm={this._onToggleMarkDownForm}
-            setHtmlBody={setHtml}
+        <Switch>
+          <Route path="/Home/create" component={MarkDownForm} />
+          <Route
+            path="/Home/:portfolio_id"
+            render={routeProps => (
+              <React.Fragment>
+                <ButtonIcon
+                  className="header-btn"
+                  // callback={() => this._onPortfolioEdit(portfolioIndex)}
+                  type="primary"
+                  iconName="fas fa-edit"
+                >
+                  Edit
+                </ButtonIcon>
+                <ButtonIcon
+                  type="primary"
+                  callback={() => {
+                    history.goBack();
+                  }}
+                  iconName="fas fa-chevron-left"
+                >
+                  Back
+                </ButtonIcon>
+                <HtmlParser {...routeProps} />
+              </React.Fragment>
+            )}
           />
-        </div>
+        </Switch>
         <div
           className={classnames({
-            hidden: portfolioIndex !== undefined
+            hidden:
+              location.pathname !== '/Home/create' &&
+              location.pathname !== '/Home'
           })}
         >
-          {portfolioData.map((datum, index) => (
-            <PortfolioCard
-              key={datum._id}
-              onImageClick={() => this._onPortfolioCardClick(index)}
-              onEdit={() => this._onPortfolioEdit(index)}
-              cardData={datum}
-            />
+          {portfolioData.map(datum => (
+            <PortfolioCard key={datum._id} cardData={datum} />
           ))}
         </div>
-        {portfolioIndex !== undefined && (
-          <HtmlParser htmlData={[portfolioData[portfolioIndex]]} />
-        )}
       </div>
     );
   }

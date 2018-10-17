@@ -5,25 +5,33 @@ import showdown from 'showdown';
 import '../styles/PortfolioCard.scss';
 import ButtonIcon from './ButtonIcon';
 import { fileDataShape } from '../utils/propTypesShapes';
+import history from '../utils/history';
 
 const converter = new showdown.Converter();
 
+const _imgClick = (projectTitle, projectData) => {
+  history.push(`/Home/${projectTitle.split(' ').join('')}`, { ...projectData });
+};
+
 const PortfolioCard = ({
-  onImageClick,
-  onEdit,
+  cardData,
   cardData: { coverImgUrl, title, markdownTexts }
 }) => (
   <div className="App-PortfolioCard">
     <div
       className="App-PortfolioCard-image-container"
       role="button"
-      onClick={onImageClick}
-      onKeyDown={onImageClick}
+      onClick={() => {
+        _imgClick(title, cardData);
+      }}
+      onKeyDown={() => {
+        _imgClick(title, cardData);
+      }}
       tabIndex={0}
     >
       <img className="image" src={coverImgUrl} alt="cover" />
       <ButtonIcon
-        callback={onImageClick}
+        callback={() => {}}
         className="button-overlay"
         iconName="fas fa-expand-arrows-alt"
         iconSize="5x"
@@ -33,13 +41,13 @@ const PortfolioCard = ({
     <div className="content">
       <ButtonIcon
         className="action-button"
-        callback={onEdit}
+        // callback={onEdit}
         iconName="fas fa-edit"
         type="borderless"
       />
       <ButtonIcon
         className="action-button"
-        callback={onImageClick}
+        // callback={onImageClick}
         iconName="fas fa-trash-alt"
         type="borderless-danger"
       />
@@ -55,14 +63,10 @@ const PortfolioCard = ({
 );
 
 PortfolioCard.propTypes = {
-  onImageClick: PropTypes.func,
-  onEdit: PropTypes.func,
-  cardData: fileDataShape
+  cardData: PropTypes.shape(fileDataShape)
 };
 
 PortfolioCard.defaultProps = {
-  onImageClick: PropTypes.func,
-  onEdit: PropTypes.func,
   cardData: {}
 };
 

@@ -1,36 +1,28 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import showdown from 'showdown';
-import classnames from 'classnames';
-import { fileDataShape } from '../utils/propTypesShapes';
 
 import '../styles/HtmlParser.scss';
+import { fileDataShape } from '../utils/propTypesShapes';
 
 const converter = new showdown.Converter();
 
-const HtmlParser = props => (
-  <ul className={classnames('App-blog-body', props.className)}>
-    {props.htmlData.map(htmlDatum => (
-      <li
-        className="single-blog"
-        key={htmlDatum.date}
-        // eslint-disable-next-line react/no-danger
-        dangerouslySetInnerHTML={{
-          __html: converter.makeHtml(htmlDatum.markdownTexts)
-        }}
-      />
-    ))}
-  </ul>
+const HtmlParser = ({ location: { state } }) => (
+  <div
+    className="App-HtmlParser"
+    // eslint-disable-next-line react/no-danger
+    dangerouslySetInnerHTML={{
+      __html: converter.makeHtml(state.markdownTexts)
+    }}
+  />
 );
 
 HtmlParser.propTypes = {
-  className: PropTypes.string,
-  htmlData: PropTypes.arrayOf(fileDataShape)
-};
-
-HtmlParser.defaultProps = {
-  className: undefined,
-  htmlData: []
+  location: PropTypes.shape({
+    pathname: PropTypes.string.isRequired,
+    search: PropTypes.string.isRequired,
+    state: PropTypes.shape(fileDataShape)
+  }).isRequired
 };
 
 export default HtmlParser;

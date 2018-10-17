@@ -6,15 +6,15 @@ import '../styles/SideBar.scss';
 
 const routes = [
   {
-    linkTo: '/',
+    linkTo: '/Home',
     routeName: 'Home'
   },
   {
-    linkTo: '/blog',
+    linkTo: '/Blog',
     routeName: 'Blog'
   },
   {
-    linkTo: '/about',
+    linkTo: '/About',
     routeName: 'About'
   }
 ];

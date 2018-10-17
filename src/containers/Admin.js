@@ -1,10 +1,10 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { Redirect } from 'react-router-dom';
 import ButtonIcon from '../components/ButtonIcon';
 import { logIn } from '../utils/fetch';
 
 import '../styles/Admin.scss';
+import history from '../utils/history';
 
 class Admin extends React.Component {
   static propTypes = {
@@ -19,8 +19,7 @@ class Admin extends React.Component {
     this.state = {
       adminUsername: '',
       adminPassword: '',
-      displayMessage: '',
-      isAuthorized: false
+      displayMessage: ''
     };
 
     this._onChange = this._onChange.bind(this);
@@ -45,16 +44,13 @@ class Admin extends React.Component {
             displayMessage: response.message
           });
         } else {
-          this.setState({ isAuthorized: true });
+          history.push('/Home');
         }
       }
     );
   }
 
   render() {
-    if (this.state.isAuthorized === true) {
-      return <Redirect to="/" />;
-    }
     return (
       <form className="App-Admin">
         <label className="App-Admin-label" htmlFor="admin-username">
