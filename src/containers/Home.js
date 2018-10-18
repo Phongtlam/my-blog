@@ -29,11 +29,19 @@ class Home extends React.Component {
 
   constructor(props) {
     super(props);
-    this.state = {};
+    this.state = {
+      isOpenMarkDownEdit: false
+    };
+
+    this._onOpenMarkDownEdit = this._onOpenMarkDownEdit.bind(this);
+  }
+
+  _onOpenMarkDownEdit(isOpen) {
+    this.setState({ isOpenMarkDownEdit: isOpen });
   }
 
   render() {
-    const { portfolioData, setHtml, location } = this.props;
+    const { portfolioData, location } = this.props;
     return (
       <div className="App-Home">
         <div className="App-Home-particles">
@@ -77,20 +85,40 @@ class Home extends React.Component {
           Create
         </ButtonIcon>
         <Switch>
-          <Route path="/Home/create" component={MarkDownForm} />
+          <Route
+            path="/Home/create"
+            render={routeProps => (
+              <MarkDownForm
+                type="portfolio"
+                {...routeProps}
+                setHtmlBody={this.props.setHtml}
+                onMarkDownFormClose={history.goBack}
+              />
+            )}
+          />
           <Route
             path="/Home/:portfolio_id"
             render={routeProps => (
               <React.Fragment>
                 <ButtonIcon
-                  className="header-btn"
-                  // callback={() => this._onPortfolioEdit(portfolioIndex)}
+                  className={classnames('header-btn', {
+                    hidden: this.state.isOpenMarkDownEdit
+                  })}
+                  callback={() => {
+                    history.push(`${routeProps.location.pathname}/edit`, {
+                      ...location.state
+                    });
+                    this._onOpenMarkDownEdit(true);
+                  }}
                   type="primary"
                   iconName="fas fa-edit"
                 >
                   Edit
                 </ButtonIcon>
                 <ButtonIcon
+                  className={classnames({
+                    hidden: this.state.isOpenMarkDownEdit
+                  })}
                   type="primary"
                   callback={() => {
                     history.goBack();
@@ -99,6 +127,18 @@ class Home extends React.Component {
                 >
                   Back
                 </ButtonIcon>
+                <MarkDownForm
+                  className={classnames({
+                    hidden: !this.state.isOpenMarkDownEdit
+                  })}
+                  type="portfolio"
+                  action="edit"
+                  onMarkDownFormClose={() => {
+                    this._onOpenMarkDownEdit();
+                    history.goBack();
+                  }}
+                  {...routeProps}
+                />
                 <HtmlParser {...routeProps} />
               </React.Fragment>
             )}
@@ -112,7 +152,13 @@ class Home extends React.Component {
           })}
         >
           {portfolioData.map(datum => (
-            <PortfolioCard key={datum._id} cardData={datum} />
+            <PortfolioCard
+              key={datum._id}
+              cardData={datum}
+              onOpenMarkDownEdit={() => {
+                this._onOpenMarkDownEdit(true);
+              }}
+            />
           ))}
         </div>
       </div>

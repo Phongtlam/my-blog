@@ -55,7 +55,7 @@ class Blog extends React.Component {
             type="post"
           />
         </div>
-        <HtmlParser htmlStrings={this.props.blogData} />
+        {/* <HtmlParser htmlStrings={this.props.blogData} /> */}
       </div>
     );
   }

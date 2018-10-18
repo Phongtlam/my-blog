@@ -9,11 +9,18 @@ import history from '../utils/history';
 
 const converter = new showdown.Converter();
 
-const _imgClick = (projectTitle, projectData) => {
+const _onImageClick = (projectTitle, projectData) => {
   history.push(`/Home/${projectTitle.split(' ').join('')}`, { ...projectData });
 };
 
+const _onEdit = (projectTitle, projectData) => {
+  history.push(`/Home/${projectTitle.split(' ').join('')}/edit`, {
+    ...projectData
+  });
+};
+
 const PortfolioCard = ({
+  onOpenMarkDownEdit,
   cardData,
   cardData: { coverImgUrl, title, markdownTexts }
 }) => (
@@ -22,10 +29,10 @@ const PortfolioCard = ({
       className="App-PortfolioCard-image-container"
       role="button"
       onClick={() => {
-        _imgClick(title, cardData);
+        _onImageClick(title, cardData);
       }}
       onKeyDown={() => {
-        _imgClick(title, cardData);
+        _onImageClick(title, cardData);
       }}
       tabIndex={0}
     >
@@ -41,13 +48,18 @@ const PortfolioCard = ({
     <div className="content">
       <ButtonIcon
         className="action-button"
-        // callback={onEdit}
+        callback={() => {
+          onOpenMarkDownEdit();
+          _onEdit(title, cardData);
+        }}
         iconName="fas fa-edit"
         type="borderless"
       />
       <ButtonIcon
         className="action-button"
-        // callback={onImageClick}
+        callback={() => {
+          // _routeToProject(title, cardData);
+        }}
         iconName="fas fa-trash-alt"
         type="borderless-danger"
       />
@@ -63,11 +75,13 @@ const PortfolioCard = ({
 );
 
 PortfolioCard.propTypes = {
-  cardData: PropTypes.shape(fileDataShape)
+  cardData: PropTypes.shape(fileDataShape),
+  onOpenMarkDownEdit: PropTypes.func
 };
 
 PortfolioCard.defaultProps = {
-  cardData: {}
+  cardData: {},
+  onOpenMarkDownEdit: PropTypes.func
 };
 
 export default PortfolioCard;

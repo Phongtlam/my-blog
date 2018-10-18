@@ -9,6 +9,8 @@ import history from '../utils/history';
 class MarkDownForm extends React.Component {
   static propTypes = {
     setHtmlBody: PropTypes.func,
+    action: PropTypes.string,
+    onMarkDownFormClose: PropTypes.func.isRequired,
     className: PropTypes.string,
     type: PropTypes.oneOf(['portfolio', 'post']),
     itemToEdit: PropTypes.shape({
@@ -24,18 +26,21 @@ class MarkDownForm extends React.Component {
   static defaultProps = {
     setHtmlBody: PropTypes.func,
     className: null,
-    type: '',
-    itemToEdit: {}
+    type: 'portfolio',
+    itemToEdit: {},
+    action: null
   };
 
   constructor(props) {
     super(props);
     this.state = {
       markDownInput: '',
-      markDownDisplay: '',
       markDownTitle: '',
       coverImgUrl: '',
-      isLargeSize: false
+      markDownDisplay: '',
+      isLargeSize: false,
+      // eslint-disable-next-line react/no-unused-state
+      internalKey: ''
     };
 
     this._onChangeInput = this._onChangeInput.bind(this);
@@ -44,6 +49,23 @@ class MarkDownForm extends React.Component {
     this._onCancelStaging = this._onCancelStaging.bind(this);
     this._onToggleFormSize = this._onToggleFormSize.bind(this);
     this._onResetMarkDownForm = this._onResetMarkDownForm.bind(this);
+  }
+
+  static getDerivedStateFromProps(props, state) {
+    if (
+      props.key !== state.internalKey &&
+      props.location &&
+      props.location.state
+    ) {
+      const { markdownTexts, title, coverImgUrl } = props.location.state;
+      return {
+        internalKey: props.key,
+        markDownInput: markdownTexts,
+        markDownTitle: title,
+        coverImgUrl
+      };
+    }
+    return null;
   }
 
   _onChangeInput(e, field) {
@@ -134,7 +156,7 @@ class MarkDownForm extends React.Component {
           <ButtonIcon
             className="markdownform-btn"
             callback={() => {
-              history.goBack();
+              this.props.onMarkDownFormClose();
               this._onResetMarkDownForm();
             }}
             iconName="fas fa-times"
@@ -182,14 +204,12 @@ class MarkDownForm extends React.Component {
             <ButtonIcon
               callback={this._onPublish}
               iconName={
-                Object.keys(this.props.itemToEdit).length > 0
+                this.props.action === 'edit'
                   ? 'fas fa-save'
                   : 'fas fa-file-import'
               }
             >
-              {Object.keys(this.props.itemToEdit).length > 0
-                ? 'Save Edit'
-                : 'Publish Post'}
+              {this.props.action === 'edit' ? 'Save Edit' : 'Publish Post'}
             </ButtonIcon>
           </div>
           <ButtonIcon

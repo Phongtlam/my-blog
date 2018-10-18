@@ -64,7 +64,7 @@ router.post('/publish', (req, res) => {
 
 router.get('/all', (req, res) => {
   mongoSchema.Portfolio.find({}, (error, portfolio) => {
-    res.send(portfolio.slice(0, 5));
+    res.send(portfolio);
   });
 });
 
