@@ -1,7 +1,5 @@
 @import "./util_variable.scss";
 
-$circle: 40px;
-
 .App-SideBar {
   padding: $m-spacing;
   background-color: $jetblack;
@@ -35,27 +33,6 @@ $circle: 40px;
     .active, .active:hover {
       font-weight: bold;
       color: $blue;
-    }
-  }
-
-  &-external-group {
-    display: flex;
-    margin-top: $m-spacing;
-
-    .external-link {
-      border-radius: $circle;
-      border: $border;
-      width: $circle;
-      height: $circle;
-      line-height: $circle;
-      text-align: center;
-      color: $grey;
-      margin-right: $m-spacing;
-
-      &:hover {
-        color: $blue;
-        border-color: $blue;
-      }
     }
   }
 }

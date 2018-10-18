@@ -42,7 +42,7 @@ const PortfolioCard = ({
         className="button-overlay"
         iconName="fas fa-expand-arrows-alt"
         iconSize="5x"
-        type="borderless"
+        buttonType="borderless"
       />
     </div>
     <div className="content">
@@ -53,7 +53,7 @@ const PortfolioCard = ({
           _onEdit(title, cardData);
         }}
         iconName="fas fa-edit"
-        type="borderless"
+        buttonType="borderless"
       />
       <ButtonIcon
         className="action-button"
@@ -61,7 +61,7 @@ const PortfolioCard = ({
           // _routeToProject(title, cardData);
         }}
         iconName="fas fa-trash-alt"
-        type="borderless-danger"
+        buttonType="borderless-danger"
       />
       <h3>{title}</h3>
       <div

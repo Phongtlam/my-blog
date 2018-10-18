@@ -1,10 +1,11 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import classnames from 'classnames';
-import { stageFile, publishFile } from '../utils/fetch';
+import { stageFile, publishFile, editFile } from '../utils/fetch';
 import '../styles/MarkDownForm.scss';
 import ButtonIcon from './ButtonIcon';
 import history from '../utils/history';
+import { fileDataShape } from '../utils/propTypesShapes';
 
 class MarkDownForm extends React.Component {
   static propTypes = {
@@ -13,21 +14,17 @@ class MarkDownForm extends React.Component {
     onMarkDownFormClose: PropTypes.func.isRequired,
     className: PropTypes.string,
     type: PropTypes.oneOf(['portfolio', 'post']),
-    itemToEdit: PropTypes.shape({
-      coverImgUrl: PropTypes.string,
-      markdownTexts: PropTypes.string,
-      date: PropTypes.string,
-      title: PropTypes.string,
-      _id: PropTypes.string,
-      __v: PropTypes.number
-    })
+    location: PropTypes.shape({
+      pathname: PropTypes.string.isRequired,
+      search: PropTypes.string.isRequired,
+      state: PropTypes.shape(fileDataShape)
+    }).isRequired
   };
 
   static defaultProps = {
     setHtmlBody: PropTypes.func,
     className: null,
     type: 'portfolio',
-    itemToEdit: {},
     action: null
   };
 
@@ -111,16 +108,37 @@ class MarkDownForm extends React.Component {
   }
 
   _onPublish() {
-    publishFile({ data: 'publish' }, this.props.type).then(res => {
-      if (res.blogPost) {
-        this.props.setHtmlBody(this.props.type, res.blogPost);
-      }
-      this.setState({
-        markDownDisplay: res.message
+    const { markDownInput, markDownTitle, coverImgUrl } = this.state;
+    let postAction = publishFile;
+    let postBody = {};
+    if (this.props.action === 'edit') {
+      postAction = editFile;
+      postBody = {
+        _id: this.props.location.state._id,
+        markdownTexts: markDownInput,
+        title: markDownTitle,
+        coverImgUrl
+      };
+    }
+    postAction(postBody, this.props.type)
+      .then(res => {
+        if (res.portfolio) {
+          this.props.setHtmlBody(
+            this.props.type,
+            res.portfolio,
+            this.props.action === 'edit'
+          );
+        }
+        this.setState({
+          markDownDisplay: res.message
+        });
+        this._onResetMarkDownForm();
+        history.goBack();
+      })
+      .catch(err => {
+        // eslint-disable-next-line no-console
+        console.error(err);
       });
-      this._onResetMarkDownForm();
-      history.goBack();
-    });
   }
 
   _onCancelStaging() {
@@ -195,7 +213,9 @@ class MarkDownForm extends React.Component {
         <div className="button-group">
           <div className="left">
             <ButtonIcon
-              className="staging-btn"
+              className={classnames('staging-btn', {
+                hidden: this.props.action === 'edit'
+              })}
               callback={this._onStagingFile}
               iconName="fas fa-file-upload"
             >

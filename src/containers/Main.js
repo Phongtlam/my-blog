@@ -6,6 +6,7 @@ import Blog from './Blog';
 import About from './About';
 import Home from './Home';
 import Admin from './Admin';
+import GetInTouch from './GetInTouch';
 
 const Main = props => (
   <main className={props.className}>
@@ -25,6 +26,7 @@ const Main = props => (
       />
       <Route path="/About" component={About} />
       <Route path="/Admin" component={Admin} />
+      <Route path="/Getintouch" component={GetInTouch} />
       <Route path="*" render={() => <Redirect to="/" />} />
     </Switch>
   </main>

@@ -3,6 +3,7 @@ import { NavLink } from 'react-router-dom';
 import PropTypes from 'prop-types';
 
 import '../styles/SideBar.scss';
+import ExternalLinks from '../components/ExternalLinks';
 
 const routes = [
   {
@@ -16,29 +17,10 @@ const routes = [
   {
     linkTo: '/About',
     routeName: 'About'
-  }
-];
-
-const externalRoutes = [
-  {
-    url: 'mailto:phongtlam@gmail.com',
-    icon: 'fas fa-envelope'
   },
   {
-    url: 'https://github.com/Phongtlam',
-    icon: 'fab fa-github'
-  },
-  {
-    url: 'https://www.linkedin.com/in/phongtlam/',
-    icon: 'fab fa-linkedin-in'
-  },
-  {
-    url: 'https://angel.co/phongtlam',
-    icon: 'fab fa-angellist'
-  },
-  {
-    url: 'https://soundcloud.com/phong-twitch-lam',
-    icon: 'fab fa-soundcloud'
+    linkTo: '/Getintouch',
+    routeName: 'Get In Touch'
   }
 ];
 
@@ -66,19 +48,7 @@ const SideBar = props => (
         </NavLink>
       ))}
     </div>
-    <div className="App-SideBar-external-group">
-      {externalRoutes.map(route => (
-        <a
-          key={route.url}
-          className="external-link"
-          href={route.url}
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <i className={route.icon} />
-        </a>
-      ))}
-    </div>
+    <ExternalLinks location="sidebar" />
   </div>
 );
 

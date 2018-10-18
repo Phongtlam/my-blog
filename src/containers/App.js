@@ -1,6 +1,6 @@
 import React from 'react';
 
-import SideBar from '../components/SideBar';
+import SideBar from './SideBar';
 import Main from './Main';
 import { fetchAll } from '../utils/fetch';
 
@@ -27,11 +27,24 @@ class App extends React.Component {
     );
   }
 
-  _setHtml(type, htmls) {
+  _setHtml(type, htmlsData, editMode = false) {
     const htmlType = type === 'portfolio' ? 'portfolioData' : 'blogData';
-    this.setState(prevState => ({
-      [htmlType]: prevState[htmlType].concat(htmls)
-    }));
+    if (editMode) {
+      const indexToReplace = this.state[htmlType].findIndex(
+        el => el._id === htmlsData._id
+      );
+      this.setState(prevState => ({
+        [htmlType]: [
+          ...prevState[htmlType].slice(0, indexToReplace),
+          htmlsData,
+          ...prevState[htmlType].slice(indexToReplace + 1)
+        ]
+      }));
+    } else {
+      this.setState(prevState => ({
+        [htmlType]: prevState[htmlType].concat(htmlsData)
+      }));
+    }
   }
 
   render() {

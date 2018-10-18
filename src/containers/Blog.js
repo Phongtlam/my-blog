@@ -38,7 +38,7 @@ class Blog extends React.Component {
           className={classnames('create-new-blog-btn', {
             hidden: this.state.openMarkDownForm
           })}
-          type="primary"
+          buttonType="primary"
           callback={() => this._onToggleMarkDownForm(true)}
           iconName="fas fa-plus"
         >

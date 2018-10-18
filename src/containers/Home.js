@@ -76,7 +76,7 @@ class Home extends React.Component {
           className={classnames('header-btn', {
             hidden: location.pathname !== '/Home'
           })}
-          type="primary"
+          buttonType="primary"
           callback={() => {
             history.push(`${location.pathname}/create`);
           }}
@@ -89,7 +89,7 @@ class Home extends React.Component {
             path="/Home/create"
             render={routeProps => (
               <MarkDownForm
-                type="portfolio"
+                buttonType="portfolio"
                 {...routeProps}
                 setHtmlBody={this.props.setHtml}
                 onMarkDownFormClose={history.goBack}
@@ -110,7 +110,7 @@ class Home extends React.Component {
                     });
                     this._onOpenMarkDownEdit(true);
                   }}
-                  type="primary"
+                  buttonType="primary"
                   iconName="fas fa-edit"
                 >
                   Edit
@@ -119,7 +119,7 @@ class Home extends React.Component {
                   className={classnames({
                     hidden: this.state.isOpenMarkDownEdit
                   })}
-                  type="primary"
+                  buttonType="primary"
                   callback={() => {
                     history.goBack();
                   }}
@@ -133,6 +133,7 @@ class Home extends React.Component {
                   })}
                   type="portfolio"
                   action="edit"
+                  setHtmlBody={this.props.setHtml}
                   onMarkDownFormClose={() => {
                     this._onOpenMarkDownEdit();
                     history.goBack();

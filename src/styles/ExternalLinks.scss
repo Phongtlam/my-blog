@@ -1,0 +1,28 @@
+@import "./util_variable.scss";
+
+.App-ExternalLinks {
+  display: flex;
+  margin-top: $m-spacing;
+
+  .external-link {
+    border: $border;
+    text-align: center;
+    color: $grey;
+    margin-right: $m-spacing;
+
+    &.sidebar {
+      @include circle(40px);
+      line-height: 40px;
+    }
+
+    &.getintouch {
+      @include circle(70px);
+      line-height: 85px;
+    }
+
+    &:hover {
+      color: $blue;
+      border-color: $blue;
+    }
+  }
+}

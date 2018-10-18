@@ -72,7 +72,7 @@ class Admin extends React.Component {
           />
         </label>
         <ButtonIcon
-          type="primary"
+          buttonType="primary"
           callback={this._onSubmit}
           iconName="fas fa-sign-in-alt"
         >

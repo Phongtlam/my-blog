@@ -46,7 +46,7 @@ router.post('/publish', (req, res) => {
       res.status(200).send(
         JSON.stringify({
           success: true,
-          blogPost: item,
+          portfolio: item,
           message: 'Successfully publish your new portfolio!'
         })
       );
@@ -60,6 +60,25 @@ router.post('/publish', (req, res) => {
         })
       );
     });
+});
+
+router.post('/edit', (req, res) => {
+  mongoSchema.Portfolio.findById(req.body._id, (error, portfolio) => {
+    if (error) {
+      res.status(400).send({
+        error,
+        message: 'This document does not exist'
+      });
+    } else {
+      portfolio.set(req.body);
+      portfolio.save((error, updatedPortfolio) => {
+        res.status(200).send({
+          success: true,
+          portfolio: updatedPortfolio
+        });
+      });
+    }
+  });
 });
 
 router.get('/all', (req, res) => {

@@ -19,11 +19,15 @@ p {
 	color: $grey;
 }
 
-input {
+input, textarea {
 	height: 40px;
 	border: $border;
 	border-radius: $s-radius;
 	padding: 0px $s-spacing;
+}
+
+textarea {
+	padding: $s-spacing;
 }
 
 button, a {

@@ -1,0 +1,43 @@
+@import "./util_variable.scss";
+
+.App-GetInTouch {
+  padding: $m-spacing;
+
+  &-header {
+    display: flex;
+    flex-direction: column;
+    margin-bottom: $xl-spacing;
+  }
+
+  &-form {
+    display: flex;
+  
+    &-controls {
+      width: 100%;
+    }
+  
+    .App-ButtonIcon {
+      display: block;
+      float: right;
+    }
+  
+    .form-group {
+      margin-bottom: $m-spacing;
+  
+      .label {
+        display: flex;
+        justify-content: space-between;
+      }
+  
+      .form-control-input {
+        resize: none;
+        width: 600px;
+        margin-left: $m-spacing;
+  
+        &.textarea {
+          height: 200px;
+        }
+      }
+    }
+  }
+}

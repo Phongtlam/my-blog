@@ -9,13 +9,15 @@ const ButtonIcon = ({
   callback,
   iconName,
   iconSize = 'lg',
-  type = 'normal',
-  children
+  buttonType = 'normal',
+  children,
+  ...moreprops
 }) => (
   <button
-    className={classnames('App-ButtonIcon', type, className)}
+    className={classnames('App-ButtonIcon', buttonType, className)}
     type="button"
     onClick={() => callback()}
+    {...moreprops}
   >
     <i className={classnames('icon', iconName, `fa-${iconSize}`)} />
     {children ? <span className="text">{children}</span> : null}
@@ -28,20 +30,22 @@ ButtonIcon.propTypes = {
   iconName: PropTypes.string.isRequired,
   iconSize: PropTypes.string,
   children: PropTypes.string,
-  type: PropTypes.oneOf([
+  buttonType: PropTypes.oneOf([
     'normal',
     'primary',
     'danger',
     'borderless',
     'borderless-danger'
-  ])
+  ]),
+  moreprops: PropTypes.shape({})
 };
 
 ButtonIcon.defaultProps = {
   className: '',
   iconSize: 'lg',
-  type: 'normal',
-  children: null
+  buttonType: 'normal',
+  children: null,
+  moreprops: {}
 };
 
 export default ButtonIcon;

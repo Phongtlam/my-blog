@@ -10,6 +10,8 @@ $red: #cf1322;
 $xs-spacing: 5px;
 $s-spacing: 10px;
 $m-spacing: 20px;
+$l-spacing: 30px;
+$xl-spacing: 50px;
 
 $border: solid 1px $black;
 $s-radius: 5px;
@@ -18,7 +20,7 @@ $m-radius: 10px;
 $transition: .5s ease;
 
 .hidden {
-  display: none;
+  display: none !important;
 }
 
 @mixin centering-item() {
@@ -26,4 +28,10 @@ $transition: .5s ease;
   top: 50%;
   left: 50%;
   transform: translate(-50%, -50%);
+}
+
+@mixin circle($diameter) {
+  border-radius: 50%;
+  width: $diameter;
+  height: $diameter;
 }
