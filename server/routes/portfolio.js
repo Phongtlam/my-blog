@@ -62,7 +62,7 @@ router.post('/publish', (req, res) => {
     });
 });
 
-router.post('/edit', (req, res) => {
+router.put('/edit', (req, res) => {
   mongoSchema.Portfolio.findById(req.body._id, (error, portfolio) => {
     if (error) {
       res.status(400).send({
@@ -71,7 +71,13 @@ router.post('/edit', (req, res) => {
       });
     } else {
       portfolio.set(req.body);
-      portfolio.save((error, updatedPortfolio) => {
+      portfolio.save((errorSave, updatedPortfolio) => {
+        if (errorSave) {
+          res.status(400).end({
+            error: errorSave,
+            message: 'Unable to save'
+          });
+        }
         res.status(200).send({
           success: true,
           portfolio: updatedPortfolio
@@ -79,6 +85,10 @@ router.post('/edit', (req, res) => {
       });
     }
   });
+});
+
+router.delete('/delete', (req, res) => {
+  console.log('delete')
 });
 
 router.get('/all', (req, res) => {
