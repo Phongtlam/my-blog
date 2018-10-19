@@ -25,6 +25,7 @@ const blogSchema = new mongoose.Schema({
 
 const portfolioSchema = new mongoose.Schema({
   date: String,
+  order: Number,
   title: String,
   coverImgUrl: String,
   markdownTexts: String

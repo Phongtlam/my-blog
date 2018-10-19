@@ -9,6 +9,7 @@
 
   &:hover {
     background-color: $blue;
+    border-color: $blue;
 
     .icon {
       color: $white;
@@ -76,5 +77,6 @@
 
   &:hover {
     background-color: $red;
+    border-color: $red;
   }
 }

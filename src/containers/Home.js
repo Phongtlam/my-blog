@@ -135,7 +135,7 @@ class Home extends React.Component {
                   action="edit"
                   setHtmlBody={this.props.setHtml}
                   onMarkDownFormClose={() => {
-                    this._onOpenMarkDownEdit();
+                    this._onOpenMarkDownEdit(false);
                     history.goBack();
                   }}
                   {...routeProps}
@@ -156,9 +156,8 @@ class Home extends React.Component {
             <PortfolioCard
               key={datum._id}
               cardData={datum}
-              onOpenMarkDownEdit={() => {
-                this._onOpenMarkDownEdit(true);
-              }}
+              onOpenMarkDownEdit={this._onOpenMarkDownEdit}
+              loadModalData={this.props.loadModalData}
             />
           ))}
         </div>

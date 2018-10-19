@@ -5,7 +5,7 @@ import PropTypes from 'prop-types';
 import '../styles/SideBar.scss';
 import ExternalLinks from '../components/ExternalLinks';
 
-const routes = [
+const ROUTES = [
   {
     linkTo: '/Home',
     routeName: 'Home'
@@ -36,7 +36,7 @@ const SideBar = props => (
       journey as a developer or just send me a message to connect.
     </p>
     <div className="App-SideBar-router-group">
-      {routes.map(route => (
+      {ROUTES.map(route => (
         <NavLink
           exact={route.linkTo === '/'}
           to={route.linkTo}

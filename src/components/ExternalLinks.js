@@ -4,7 +4,7 @@ import classnames from 'classnames';
 
 import '../styles/ExternalLinks.scss';
 
-const externalRoutes = [
+const EXTERNAL_ROUTES = [
   {
     url: 'mailto:phongtlam@gmail.com',
     icon: 'fas fa-envelope'
@@ -29,7 +29,7 @@ const externalRoutes = [
 
 const ExternalLinks = ({ location }) => (
   <div className="App-ExternalLinks">
-    {externalRoutes.map(route => (
+    {EXTERNAL_ROUTES.map(route => (
       <a
         key={route.url}
         className={classnames('external-link', location)}

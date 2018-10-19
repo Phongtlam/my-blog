@@ -35,6 +35,7 @@ class MarkDownForm extends React.Component {
       markDownTitle: '',
       coverImgUrl: '',
       markDownDisplay: '',
+      order: 0,
       isLargeSize: false,
       // eslint-disable-next-line react/no-unused-state
       internalKey: ''
@@ -54,25 +55,34 @@ class MarkDownForm extends React.Component {
       props.location &&
       props.location.state
     ) {
-      const { markdownTexts, title, coverImgUrl } = props.location.state;
+      const { markdownTexts, title, coverImgUrl, order } = props.location.state;
       return {
         internalKey: props.key,
         markDownInput: markdownTexts,
         markDownTitle: title,
-        coverImgUrl
+        coverImgUrl,
+        order
       };
     }
     return null;
   }
 
   _onChangeInput(e, field) {
-    this.setState({
-      [field]: e.target.value
-    });
+    const valueToSet = e.target.value;
+    if (field === 'order') {
+      const numValue = Number(valueToSet);
+      this.setState({
+        order: numValue
+      });
+    } else {
+      this.setState({
+        [field]: valueToSet
+      });
+    }
   }
 
   _onStagingFile() {
-    const { markDownInput, markDownTitle, coverImgUrl } = this.state;
+    const { markDownInput, markDownTitle, coverImgUrl, order } = this.state;
     if (
       markDownInput.length === 0 ||
       markDownTitle.length === 0 ||
@@ -91,7 +101,8 @@ class MarkDownForm extends React.Component {
         date: new Date(),
         markdownTexts: markDownInput,
         title: markDownTitle,
-        coverImgUrl
+        coverImgUrl,
+        order
       },
       this.props.type
     )
@@ -108,7 +119,7 @@ class MarkDownForm extends React.Component {
   }
 
   _onPublish() {
-    const { markDownInput, markDownTitle, coverImgUrl } = this.state;
+    const { markDownInput, markDownTitle, coverImgUrl, order } = this.state;
     let postAction = publishFile;
     let postBody = {};
     if (this.props.action === 'edit') {
@@ -117,7 +128,8 @@ class MarkDownForm extends React.Component {
         _id: this.props.location.state._id,
         markdownTexts: markDownInput,
         title: markDownTitle,
-        coverImgUrl
+        coverImgUrl,
+        order
       };
     }
     postAction(postBody, this.props.type)
@@ -155,7 +167,8 @@ class MarkDownForm extends React.Component {
     this.setState({
       markDownInput: '',
       markDownTitle: '',
-      coverImgUrl: ''
+      coverImgUrl: '',
+      order: 0
     });
   }
 
@@ -175,7 +188,6 @@ class MarkDownForm extends React.Component {
             className="markdownform-btn"
             callback={() => {
               this.props.onMarkDownFormClose();
-              this._onResetMarkDownForm();
             }}
             iconName="fas fa-times"
             iconSize="2x"
@@ -201,6 +213,13 @@ class MarkDownForm extends React.Component {
             value={this.state.coverImgUrl}
             className="header-input"
             placeholder="Cover Img url"
+          />
+          <input
+            onChange={e => this._onChangeInput(e, 'order')}
+            value={this.state.order}
+            type="number"
+            className="header-input"
+            placeholder="Order"
           />
           <span className="text-display">{this.state.markDownDisplay}</span>
         </div>
@@ -235,7 +254,7 @@ class MarkDownForm extends React.Component {
           <ButtonIcon
             callback={this._onCancelStaging}
             iconName="fas fa-ban"
-            type="danger"
+            buttonType="danger"
           >
             Cancel Staging
           </ButtonIcon>

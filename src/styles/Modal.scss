@@ -1,0 +1,51 @@
+@import "./util_variable.scss";
+
+.App-Modal {
+  &-wrapper {
+    @include appzindex("max");
+    position: fixed;
+    top: 0;
+    right: 0;
+    left: 0;
+    bottom: 0;
+    background-color: rgba(0, 0, 0, 0.65);
+    height: 100%;
+  }
+
+  &-content {
+    @include centering-item();
+    width: 400px;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    border: $border;
+    
+    background: $white;
+
+    .header {
+      &.primary {
+        background-color: $lightblue;
+      }
+
+      &.danger {
+        background-color: $lightred;
+      }
+
+      height: 50px;
+      line-height: 10px;
+      margin-bottom: $m-spacing;
+      padding: $m-spacing;
+      
+      &-message {
+        color: $white;
+      }
+    }
+
+    .button-group {
+      display: flex;
+      flex-direction: row;
+      justify-content: space-between;
+      padding: $m-spacing;
+    }
+  }
+}

@@ -6,22 +6,26 @@ import '../styles/PortfolioCard.scss';
 import ButtonIcon from './ButtonIcon';
 import { fileDataShape } from '../utils/propTypesShapes';
 import history from '../utils/history';
+import { deleteFile } from '../utils/fetch';
 
 const converter = new showdown.Converter();
 
 const _onImageClick = (projectTitle, projectData) => {
-  history.push(`/Home/${projectTitle.split(' ').join('')}`, { ...projectData });
+  history.push(`/Home/${projectTitle}`, { ...projectData });
 };
 
 const _onEdit = (projectTitle, projectData) => {
-  history.push(`/Home/${projectTitle.split(' ').join('')}/edit`, {
+  history.push(`/Home/${projectTitle}/edit`, {
     ...projectData
   });
 };
 
+const _onDelete = project => deleteFile(project, 'portfolio');
+
 const PortfolioCard = ({
   onOpenMarkDownEdit,
   cardData,
+  loadModalData,
   cardData: { coverImgUrl, title, markdownTexts }
 }) => (
   <div className="App-PortfolioCard">
@@ -40,7 +44,7 @@ const PortfolioCard = ({
       <ButtonIcon
         callback={() => {}}
         className="button-overlay"
-        iconName="fas fa-expand-arrows-alt"
+        iconName="fas fa-expand"
         iconSize="5x"
         buttonType="borderless"
       />
@@ -49,7 +53,7 @@ const PortfolioCard = ({
       <ButtonIcon
         className="action-button"
         callback={() => {
-          onOpenMarkDownEdit();
+          onOpenMarkDownEdit(true);
           _onEdit(title, cardData);
         }}
         iconName="fas fa-edit"
@@ -58,7 +62,11 @@ const PortfolioCard = ({
       <ButtonIcon
         className="action-button"
         callback={() => {
-          // _routeToProject(title, cardData);
+          loadModalData({
+            callback: () => _onDelete(cardData),
+            message: `Delete ${cardData.title} ?`,
+            type: 'danger'
+          });
         }}
         iconName="fas fa-trash-alt"
         buttonType="borderless-danger"
@@ -76,12 +84,14 @@ const PortfolioCard = ({
 
 PortfolioCard.propTypes = {
   cardData: PropTypes.shape(fileDataShape),
-  onOpenMarkDownEdit: PropTypes.func
+  onOpenMarkDownEdit: PropTypes.func,
+  loadModalData: PropTypes.func
 };
 
 PortfolioCard.defaultProps = {
   cardData: {},
-  onOpenMarkDownEdit: PropTypes.func
+  onOpenMarkDownEdit: PropTypes.func,
+  loadModalData: PropTypes.func
 };
 
 export default PortfolioCard;

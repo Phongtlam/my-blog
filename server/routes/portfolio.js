@@ -80,7 +80,8 @@ router.put('/edit', (req, res) => {
         }
         res.status(200).send({
           success: true,
-          portfolio: updatedPortfolio
+          portfolio: updatedPortfolio,
+          message: 'Successfully updated document'
         });
       });
     }
@@ -88,7 +89,23 @@ router.put('/edit', (req, res) => {
 });
 
 router.delete('/delete', (req, res) => {
-  console.log('delete')
+  mongoSchema.Portfolio.findById(req.body._id)
+    .deleteOne()
+    .exec()
+    .then(portfolioToDelete => {
+      res.status(200).send({
+        message: 'Successfully deleted',
+        portfolio: portfolioToDelete,
+        _id: req.body._id,
+        success: true
+      });
+    })
+    .catch(error => {
+      res.status(400).send({
+        error,
+        message: 'Unable to delete'
+      });
+    });
 });
 
 router.get('/all', (req, res) => {
